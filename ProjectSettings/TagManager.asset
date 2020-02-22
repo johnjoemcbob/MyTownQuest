@@ -4,19 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - FryingPan
   - Knife
-  - Ground
-  - Whisk
   - Hammer
-  - Ingredient
-  - Water
-  - Container
-  - Utensil
-  - Oven
-  - Peel
-  - Pestle
-  - WoodenSpoon
   layers:
   - Default
   - TransparentFX
@@ -26,10 +15,10 @@ TagManager:
   - UI
   - 
   - 
-  - Bowl
-  - Grabbable
-  - Oven
-  - Button
+  - BuildingPart
+  - 
+  - 
+  - 
   - 
   - 
   - 

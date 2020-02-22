@@ -315,5 +315,28 @@ public class MyTownQuest : MonoBehaviour
 		}
 		return particle;
 	}
+
+	public static GameObject SpawnResourceAudioSource( string clipname, Vector3 point, float pitch = 1, float volume = 1 )
+	{
+		AudioClip clip = Resources.Load( "Sounds/" + clipname ) as AudioClip;
+		return SpawnAudioSource( clip, point, pitch, volume );
+	}
+
+	public static GameObject SpawnAudioSource( AudioClip clip, Vector3 point, float pitch = 1, float volume = 1 )
+	{
+		GameObject source = Instantiate( Resources.Load( "Prefabs/Audio Source" ) ) as GameObject;
+		{
+			source.transform.position = point;
+
+			AudioSource audio = source.GetComponent<AudioSource>();
+			audio.clip = clip;
+			audio.pitch = pitch;
+			audio.volume = volume;
+			audio.Play();
+
+			Destroy( source, clip.length + 0.1f );
+		}
+		return source;
+	}
 	#endregion
 }

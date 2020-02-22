@@ -26,6 +26,7 @@ public class InfiniteSpawner : MonoBehaviour
 		if ( CurrentGrabbable && Vector3.Distance( CurrentGrabbable.transform.position, transform.position ) > MaxDistance )
 		{
 			// Flag to spawn a new one
+			CurrentGrabbable.GetComponent<BuildingPart>().Spawned = true;
 			CurrentGrabbable = null;
 		}
 
@@ -40,6 +41,8 @@ public class InfiniteSpawner : MonoBehaviour
 	{
 		CurrentGrabbable = Instantiate( GrabPrefab, transform );
 		GameObject mdl = Instantiate( ModelPrefab, CurrentGrabbable.transform.GetChild( 0 ) );
-		CurrentGrabbable.GetComponent<Rigidbody>().isKinematic = true;
+		//CurrentGrabbable.GetComponent<Rigidbody>().isKinematic = true;
+
+		MyTownQuest.SpawnResourceAudioSource( "click1", transform.position, Random.Range( 0.8f, 1.2f ) );
 	}
 }
