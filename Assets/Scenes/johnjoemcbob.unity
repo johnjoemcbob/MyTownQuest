@@ -168,7 +168,7 @@ MonoBehaviour:
   MaxDistance: 0.1
   ModelPrefab: {fileID: 1399339110472324017, guid: 9793dd3f78c0b7a44834502f02d23b9e,
     type: 3}
-  GrabPrefab: {fileID: 6078236933459641046, guid: ea96856882889b24b95f480b2117a459,
+  GrabPrefab: {fileID: 6711139413081996216, guid: ea96856882889b24b95f480b2117a459,
     type: 3}
 --- !u!1001 &11844312
 PrefabInstance:
@@ -1535,7 +1535,7 @@ MonoBehaviour:
   MaxDistance: 0.1
   ModelPrefab: {fileID: 4520794782407056370, guid: e8ec19f5fce638143b23a59003088158,
     type: 3}
-  GrabPrefab: {fileID: 6078236933459641046, guid: ea96856882889b24b95f480b2117a459,
+  GrabPrefab: {fileID: 6711139413081996216, guid: ea96856882889b24b95f480b2117a459,
     type: 3}
 --- !u!1 &71306110
 GameObject:
@@ -5673,7 +5673,7 @@ MonoBehaviour:
   MaxDistance: 0.1
   ModelPrefab: {fileID: 8640743045935169630, guid: 34306d22f2092564bb5acb66dd4eb615,
     type: 3}
-  GrabPrefab: {fileID: 6078236933459641046, guid: ea96856882889b24b95f480b2117a459,
+  GrabPrefab: {fileID: 6711139413081996216, guid: ea96856882889b24b95f480b2117a459,
     type: 3}
 --- !u!1001 &424140947
 PrefabInstance:
@@ -6341,7 +6341,7 @@ MonoBehaviour:
   MaxDistance: 0.1
   ModelPrefab: {fileID: 7733880013652885038, guid: 260397801cb6d0b458d12b782f337c31,
     type: 3}
-  GrabPrefab: {fileID: 6078236933459641046, guid: ea96856882889b24b95f480b2117a459,
+  GrabPrefab: {fileID: 6711139413081996216, guid: ea96856882889b24b95f480b2117a459,
     type: 3}
 --- !u!1 &489314531
 GameObject:
@@ -7035,7 +7035,7 @@ MonoBehaviour:
   MaxDistance: 0.1
   ModelPrefab: {fileID: 268028168990410255, guid: c66b51e66b7f03648a6dce312c09e33d,
     type: 3}
-  GrabPrefab: {fileID: 6078236933459641046, guid: ea96856882889b24b95f480b2117a459,
+  GrabPrefab: {fileID: 6711139413081996216, guid: ea96856882889b24b95f480b2117a459,
     type: 3}
 --- !u!1 &609618799
 GameObject:
@@ -13097,7 +13097,7 @@ MonoBehaviour:
   MaxDistance: 0.1
   ModelPrefab: {fileID: 8210148234667526676, guid: 1e1c6b2183c804142895a926c1b89491,
     type: 3}
-  GrabPrefab: {fileID: 6078236933459641046, guid: ea96856882889b24b95f480b2117a459,
+  GrabPrefab: {fileID: 6711139413081996216, guid: ea96856882889b24b95f480b2117a459,
     type: 3}
 --- !u!1 &1274400431
 GameObject:
@@ -15657,7 +15657,7 @@ MonoBehaviour:
   MaxDistance: 0.1
   ModelPrefab: {fileID: 5102063333349890008, guid: 76eec427f5258df4d94823c54a956bb0,
     type: 3}
-  GrabPrefab: {fileID: 6078236933459641046, guid: ea96856882889b24b95f480b2117a459,
+  GrabPrefab: {fileID: 6711139413081996216, guid: ea96856882889b24b95f480b2117a459,
     type: 3}
 --- !u!4 &1548718172 stripped
 Transform:
@@ -20385,7 +20385,7 @@ MonoBehaviour:
   MaxDistance: 0.1
   ModelPrefab: {fileID: 9025019561615331245, guid: 6280aa1f7e4331d48a7e45f464b2285a,
     type: 3}
-  GrabPrefab: {fileID: 6078236933459641046, guid: ea96856882889b24b95f480b2117a459,
+  GrabPrefab: {fileID: 6711139413081996216, guid: ea96856882889b24b95f480b2117a459,
     type: 3}
 --- !u!1 &1860872752
 GameObject:
@@ -22432,7 +22432,7 @@ MonoBehaviour:
   MaxDistance: 0.1
   ModelPrefab: {fileID: 2852012149945999027, guid: c38ebfe9c8268c44f87b700d9929664b,
     type: 3}
-  GrabPrefab: {fileID: 6078236933459641046, guid: ea96856882889b24b95f480b2117a459,
+  GrabPrefab: {fileID: 6711139413081996216, guid: ea96856882889b24b95f480b2117a459,
     type: 3}
 --- !u!1 &2116252067
 GameObject:

@@ -5,9 +5,12 @@ using VRTK.Prefabs.Interactions.Interactables.Grab.Action;
 
 public class BuildingPart : MonoBehaviour
 {
+	public static List<BuildingPart> Parts = new List<BuildingPart>();
+
 	[Header( "Variables" )]
 	public float DestroyDistance = 0.1f;
 	public float SnapDistance = 0.05f;
+	public float BetweenSnaps = 0.1f;
 
 	[Header( "References" )]
 	public Transform SnapPointsParent;
@@ -21,8 +24,12 @@ public class BuildingPart : MonoBehaviour
 	private GrabInteractableFollowAction Follower;
 	private Transform LastClosest = null;
 
+	private float NextSnap = 0;
+
 	public void Start()
 	{
+		Parts.Add( this );
+
 		SnapPointsParent = transform.FindChildren( "SnapZoneTrigger" )[0];
 
 		Grabbed = GetComponent<IsGrabbedTracker>();
@@ -55,11 +62,11 @@ public class BuildingPart : MonoBehaviour
 			SortedList<float, Transform> possible_other = new SortedList<float, Transform>();
 			foreach ( var snapable in InSnapRangeOf )
 			{
-				if ( snapable != null )
+				if ( snapable != null && !snapable.Grabbed.IsGrabbed )
 				{
 					foreach ( Transform child in snapable.SnapPointsParent )
 					{
-						float dist = Vector3.Distance( Grabbed.LastGrabbedBy.transform.position, child.position );
+						float dist = Vector3.Distance( transform.position, child.position );
 						if ( dist <= SnapDistance && !possible_other.ContainsKey( dist ) )
 						{
 							possible_other.Add( dist, child );
@@ -93,15 +100,24 @@ public class BuildingPart : MonoBehaviour
 				{
 					//Debug.Log( "possible: " + closest + " " + possible_self.Values[0] );
 					// If valid match then snap and return
-					Transform offsetparent = transform.GetChild( 0 ).GetChild( 0 ).GetChild( 0 );
+					//Transform offsetparent = transform.GetChild( 0 ).GetChild( 0 ).GetChild( 0 );
 					//offsetparent.transform.localPosition = -possible_self.Values[0].localPosition;
 					//transform.GetChild( 0 ).GetChild( 0 ).transform.localEulerAngles = -closestself.localEulerAngles;
 
 					// Snap
-					Transform visual = GetVisual();
-					visual.position = closest.position;
-					visual.localPosition -= possible_self.Values[0].localPosition + new Vector3( 0, 0.5f, 0 );
-					visual.rotation = closest.parent.rotation;
+					if ( NextSnap <= Time.time )
+					{
+						Transform visual = GetVisual();
+						visual.rotation = closest.parent.rotation;
+						visual.position = closest.position;
+						visual.localPosition -= possible_self.Values[0].localPosition + new Vector3( 0, 0.5f, 0 );
+
+						NextSnap = Time.time + BetweenSnaps;
+					}
+					else
+					{
+						closest = LastClosest;
+					}
 
 					//Follower.FollowTracking = GrabInteractableFollowAction.TrackingType.FollowRigidbody;
 
@@ -114,7 +130,7 @@ public class BuildingPart : MonoBehaviour
 
 			if ( LastClosest != closest )
 			{
-				MyTownQuest.SpawnResourceAudioSource( "swoosh2", transform.position, Random.Range( 0.8f, 1.2f ), 0.2f );
+				MyTownQuest.SpawnResourceAudioSource( "swoosh3", transform.position, Random.Range( 0.8f, 1.2f ), 0.2f );
 			}
 			LastClosest = closest;
 		}
@@ -129,6 +145,11 @@ public class BuildingPart : MonoBehaviour
 			visual.localPosition = Vector3.zero;
 			visual.localEulerAngles = Vector3.zero;
 		}
+	}
+
+	private void OnDestroy()
+	{
+		Parts.Remove( this );
 	}
 
 	private Transform GetVisual()

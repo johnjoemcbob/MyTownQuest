@@ -173,7 +173,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3396872436262166070
 Transform:
   m_ObjectHideFlags: 0
@@ -296,7 +296,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &578057906027145820
 Transform:
   m_ObjectHideFlags: 0
@@ -327,7 +327,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5766370962499277636
 Transform:
   m_ObjectHideFlags: 0
@@ -437,7 +437,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9190796980705563876
 Transform:
   m_ObjectHideFlags: 0
@@ -626,7 +626,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4026256319129811587
 Transform:
   m_ObjectHideFlags: 0
@@ -809,6 +809,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5864448906790933565}
+  - component: {fileID: 6716120970010362722}
   m_Layer: 0
   m_Name: SnapPoint - Bottom - Lower Left
   m_TagString: Untagged
@@ -831,6 +832,19 @@ Transform:
   m_Father: {fileID: 548846009670558955}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
+--- !u!114 &6716120970010362722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6064165496248773056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39a97b134359ab948bd276d392e4ecad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NameContains: Top
 --- !u!1 &6109359122924384841
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,7 +860,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &781433761188318460
 Transform:
   m_ObjectHideFlags: 0
@@ -871,6 +885,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8996603423957203260}
+  - component: {fileID: 9194175271431005502}
   m_Layer: 0
   m_Name: SnapPoint - Top - Lower Left
   m_TagString: Untagged
@@ -893,6 +908,19 @@ Transform:
   m_Father: {fileID: 548846009670558955}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9194175271431005502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6402259197675494847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39a97b134359ab948bd276d392e4ecad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NameContains: Bottom
 --- !u!1 &7008036893350138905
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,7 +990,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6401462881673624338
 Transform:
   m_ObjectHideFlags: 0
@@ -1072,7 +1100,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7601675113217778783
 Transform:
   m_ObjectHideFlags: 0
@@ -1236,15 +1264,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b487724616828864b97e17a3c4e8197e, type: 3}
---- !u!4 &5432491933049978302 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: b487724616828864b97e17a3c4e8197e,
-    type: 3}
-  m_PrefabInstance: {fileID: 1017429167400539812}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8434340948284544437 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -355100439398595823, guid: b487724616828864b97e17a3c4e8197e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1017429167400539812}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5432491933049978302 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: b487724616828864b97e17a3c4e8197e,
     type: 3}
   m_PrefabInstance: {fileID: 1017429167400539812}
   m_PrefabAsset: {fileID: 0}
