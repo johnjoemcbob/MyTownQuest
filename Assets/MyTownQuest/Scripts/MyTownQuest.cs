@@ -16,12 +16,12 @@ public class MyTownQuest : MonoBehaviour
 
 	bool loading = false;
 
-	public void Start()
-	{
-		StartCoroutine( KeepSheetsUpToDate() );
+	//public void Start()
+	//{
+	//	StartCoroutine( KeepSheetsUpToDate() );
 
-		Debug.Log( SystemInfo.deviceUniqueIdentifier );
-	}
+	//	Debug.Log( SystemInfo.deviceUniqueIdentifier );
+	//}
 
 	//private void Update()
 	//{
