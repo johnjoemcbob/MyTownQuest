@@ -34,11 +34,6 @@ public class BuildingFoundation : MonoBehaviour
 		}
     }
 
-    void Update()
-    {
-        
-    }
-
 	private void OnTriggerEnter( Collider other )
 	{
 		BuildingPart part = other.attachedRigidbody.GetComponentInParent<BuildingPart>();
@@ -53,26 +48,61 @@ public class BuildingFoundation : MonoBehaviour
 		BuildingPart part = other.attachedRigidbody.GetComponentInParent<BuildingPart>();
 		if ( part != null && part.IsSpawned && part.Grabbed.IsGrabbed )
 		{
-			// TODO; Check a few positions near this by offsetting the gridpos +1/-1 in each axis
-			// Starting with 0,0,0 obviously. obviously.
-
-			// Simplify to grid pos
-			Vector3Int gridpos = Grid.WorldToCell( part.transform.position );
-
 			// Blank any old cells
 			DeOccupyGrid( part );
 
-			// Check its a valid position based on collision grid
-			if ( !DoesCollide( gridpos, part ) )
+			// TODO; Check a few positions near this by offsetting the gridpos +1/-1 in each axis
+			// Starting with 0,0,0 obviously. obviously.
+			Vector3Int[] attempts = new Vector3Int[]
 			{
-				// Occupy the grid cells now
-				// Part keeps track of the cells it occupied? so if move it blanks those first?
-				OccupyGrid( gridpos, part );
+				new Vector3Int( 0, 0, 0 ),
+				new Vector3Int( -1, 0, 0 ),
+				new Vector3Int( 1, 0, 0 ),
+				new Vector3Int( 0, 0, -1 ),
+				new Vector3Int( 0, 0, 1 ),
+				new Vector3Int( 0, 1, 0 )
+			};
+			foreach ( var horizontaloff in attempts )
+			{
+				// Simplify to grid pos
+				Vector3Int gridpos = Grid.WorldToCell( part.transform.position ) + horizontaloff;
 
-				// Visual there
-				Transform visual = part.GetVisual();
-				visual.position = Grid.CellToWorld( gridpos );
-				visual.rotation = transform.rotation;
+				// Cast downwards while level below has no collision issue
+				while ( gridpos.y > 0 )
+				{
+					Vector3Int off = new Vector3Int( 0, -1, 0 );
+					if ( !DoesCollide( gridpos, part, off ) )
+					{
+						gridpos += off;
+					}
+					else
+					{
+						break;
+					}
+				}
+
+				// Check its a valid position based on collision grid
+				if ( !DoesCollide( gridpos, part, Vector3Int.zero ) )
+				{
+					// Occupy the grid cells now
+					// Part keeps track of the cells it occupied? so if move it blanks those first?
+					OccupyGrid( gridpos, part );
+
+					// Visual there
+					Transform visual = part.GetVisual();
+					visual.rotation = transform.rotation;
+					visual.localEulerAngles = new Vector3( visual.localEulerAngles.x, 0, visual.localEulerAngles.z );
+					visual.position = Grid.CellToWorld( gridpos );
+
+					part.Snapped = Grid.CellToWorld( gridpos );
+					part.Foundation = this;
+
+					break;
+				}
+				else
+				{
+					part.Foundation = null;
+				}
 			}
 		}
 	}
@@ -86,16 +116,37 @@ public class BuildingFoundation : MonoBehaviour
 		}
 	}
 
-	private bool DoesCollide( Vector3Int pos, BuildingPart part )
+	//private void OnDrawGizmos()
+	//{
+	//	Gizmos.color = new Color( 1, 0, 0, 0.5f );
+	//	float size = 0.05f;
+
+	//	// Draw a semitransparent blue cube at the transforms position
+	//	for ( int x = 1; x <= BuildableAreaSize.x; x++ )
+	//	{
+	//		for ( int y = 0; y <= BuildableAreaSize.y; y++ )
+	//		{
+	//			for ( int z = 1; z <= BuildableAreaSize.z; z++ )
+	//			{
+	//				if ( GridCollision[x, y, z] )
+	//				{
+	//					Gizmos.DrawCube( transform.position + transform.up * size + new Vector3( x, y, z ) * size - Vector3.one * size / 2, Vector3.one * size * 1.1f );
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+
+	private bool DoesCollide( Vector3Int pos, BuildingPart part, Vector3Int off )
 	{
 		foreach ( var cell in part.CollisionShape.Cells )
 		{
-			Vector3Int check = pos + cell;
+			Vector3Int check = pos + cell + off;
 			// If outside grid (i.e. checking if NOT inside)
 			if ( !(
-				( check.x >= 0 && check.x <= BuildableAreaSize.x ) &&
+				( check.x >  0 && check.x <= BuildableAreaSize.x ) &&
 				( check.y >= 0 && check.y <= BuildableAreaSize.y ) &&
-				( check.z >= 0 && check.z <= BuildableAreaSize.z )
+				( check.z >  0 && check.z <= BuildableAreaSize.z )
 			) )
 			{
 				return true;

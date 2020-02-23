@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using VRTK.Prefabs.Interactions.Interactables.Grab.Action;
+using Zinnia.Action;
+using Zinnia.Action.Collection;
 
 public class BuildingPart : MonoBehaviour
 {
@@ -21,6 +23,10 @@ public class BuildingPart : MonoBehaviour
 	public List<Vector3Int> OccupiedCells = new List<Vector3Int>();
 	[HideInInspector]
 	public bool IsSpawned = false;
+	[HideInInspector]
+	public Vector3 Snapped;
+	[HideInInspector]
+	public BuildingFoundation Foundation = null;
 
 	[HideInInspector]
 	public IsGrabbedTracker Grabbed;
@@ -28,10 +34,26 @@ public class BuildingPart : MonoBehaviour
 	public CollisionShape CollisionShape;
 
 	private GrabInteractableFollowAction Follower;
-	private Transform LastClosest = null;
 	private BuildingPart LastSnappedTo = null;
 
-	private float NextSnap = 0;
+	//private void Awake()
+	//{
+	//	Debug.Log( "try.. on awake.." );
+	//	string[] sides = new string[] { "Left", "Right" };
+	//	int index = 0;
+	//	foreach ( var side in sides )
+	//	{
+	//		ActionRegistrar.ActionSource src = new ActionRegistrar.ActionSource();
+	//		{
+	//			src.Container = GameObject.Find( "AttachmentOrigin" + side );
+	//			src.Action = GameObject.Find( "FloatActionUse" + side ).GetComponent<FloatAction>();
+	//		}
+	//		Debug.Log( src.Action );
+	//		GetComponentInChildren<ActionRegistrarSourceObservableList>( true ).Add( src );
+	//		Debug.Log( GetComponentInChildren<ActionRegistrar>( true ).Sources.Added );
+	//		index++;
+	//	}
+	//}
 
 	public void Start()
 	{
@@ -74,6 +96,25 @@ public class BuildingPart : MonoBehaviour
 		return transform.GetChild( 0 ).GetChild( 0 ).GetChild( 0 );
 	}
 
+	public void UseWhileHeld()
+	{
+		Vector3 rotate = new Vector3( 0, 90, 0 );
+		transform.GetChild( 0 ).localEulerAngles += rotate;
+		for ( int cell = 0; cell < CollisionShape.Cells.Length; cell++ )
+		{
+			CollisionShape.Cells[cell] = RotatePointAroundPivot( CollisionShape.Cells[cell], Vector3.one * 0.5f, rotate );
+		}
+	}
+
+	// From: https://answers.unity.com/questions/532297/rotate-a-vector-around-a-certain-point.html
+	private Vector3Int RotatePointAroundPivot( Vector3Int point, Vector3 pivot, Vector3 angle )
+	{
+		Vector3 dir = point - pivot; // get point direction relative to pivot
+			dir = Quaternion.Euler( angle ) * dir; // rotate it
+		Vector3 rotpoint = dir + pivot; // calculate rotated point
+		return new Vector3Int( Mathf.RoundToInt( rotpoint.x ), Mathf.RoundToInt( rotpoint.y ), Mathf.RoundToInt( rotpoint.z ) );
+	}
+
 	public void OnGrab()
 	{
 		transform.GetComponentInChildren<Collider>().isTrigger = false;
@@ -96,20 +137,26 @@ public class BuildingPart : MonoBehaviour
 
 		// Reset visual/anchor offsets
 		Transform visual = GetVisual();
-		transform.position = visual.position + visual.up * 0.05f;
-		transform.rotation = visual.rotation;
+		//transform.position = visual.position + visual.up * 0.05f;
+		//transform.rotation = visual.rotation;
 		visual.localPosition = Vector3.zero;
 		visual.localEulerAngles = Vector3.zero;
+		if ( Foundation )
+		{
+			transform.rotation = Foundation.transform.rotation;
+			transform.localEulerAngles = new Vector3( transform.localEulerAngles.x, 0, transform.localEulerAngles.z );
+			transform.position = Snapped + Foundation.transform.up * 0.05f;
+		}
 
 		// Parent
-		if ( LastSnappedTo != null )
-		{
-			transform.SetParent( LastSnappedTo.transform );
-		}
-		else
-		{
-			transform.SetParent( null );
-		}
+		//if ( LastSnappedTo != null )
+		//{
+		//	transform.SetParent( LastSnappedTo.transform );
+		//}
+		//else
+		//{
+		//	transform.SetParent( null );
+		//}
 
 		// Hide all spheres
 		foreach ( var part in Parts )

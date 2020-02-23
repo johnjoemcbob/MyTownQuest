@@ -339,4 +339,30 @@ public class MyTownQuest : MonoBehaviour
 		return source;
 	}
 	#endregion
+
+	#region Input
+	public void OnLeftUseActivationStateChanged( bool change )
+	{
+		Debug.Log( "l " + change );
+		if ( change )
+		{
+			foreach ( var input in FindObjectsOfType<InputReceiver>() )
+			{
+				input.OnInternalUse( "Left" );
+			}
+		}
+	}
+
+	public void OnRightUseActivationStateChanged( bool change )
+	{
+		Debug.Log( "r " + change );
+		if ( change )
+		{
+			foreach ( var input in FindObjectsOfType<InputReceiver>() )
+			{
+				input.OnInternalUse( "Right" );
+			}
+		}
+	}
+	#endregion
 }
