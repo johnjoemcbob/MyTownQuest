@@ -5,4 +5,5 @@ using UnityEngine;
 public class SnapRequirement : MonoBehaviour
 {
 	public string NameContains = "Bottom";
+	public bool CanParent = true;
 }

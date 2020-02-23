@@ -23,18 +23,27 @@ public class BuildingPart : MonoBehaviour
 	private IsGrabbedTracker Grabbed;
 	private GrabInteractableFollowAction Follower;
 	private Transform LastClosest = null;
+	private BuildingPart LastSnappedTo = null;
 
 	private float NextSnap = 0;
 
 	public void Start()
 	{
+		// Track this part
 		Parts.Add( this );
-
-		SnapPointsParent = transform.FindChildren( "SnapZoneTrigger" )[0];
 
 		Grabbed = GetComponent<IsGrabbedTracker>();
 		Follower = GetComponentInChildren<GrabInteractableFollowAction>();
 
+		SnapPointsParent = transform.FindChildren( "SnapZoneTrigger" )[0];
+
+		// Disable spheres until snapable
+		foreach ( var renderer in SnapPointsParent.GetComponentsInChildren<MeshRenderer>( true ) )
+		{
+			renderer.enabled = false;
+		}
+
+		// Force correct settings since prefab is overwritten somehow
 		StartCoroutine( CorrectSettings() );
 	}
 
@@ -56,6 +65,27 @@ public class BuildingPart : MonoBehaviour
 		{
 			Transform closest = null;
 
+			// Hide all spheres
+			foreach ( var part in Parts )
+			{
+				foreach ( var renderer in part.SnapPointsParent.GetComponentsInChildren<MeshRenderer>( true ) )
+				{
+					renderer.enabled = false;
+				}
+			}
+
+			// Show spheres of those in snap range
+			foreach ( var snapable in InSnapRangeOf )
+			{
+				if ( snapable != null && snapable.SnapPointsParent != null )
+				{
+					foreach ( var renderer in snapable.SnapPointsParent.GetComponentsInChildren<MeshRenderer>( true ) )
+					{
+						renderer.enabled = true;
+					}
+				}
+			}
+
 			// Find all possible snap points
 			// Add to dictionary with distance
 			// Sort by closest first
@@ -67,7 +97,8 @@ public class BuildingPart : MonoBehaviour
 					foreach ( Transform child in snapable.SnapPointsParent )
 					{
 						float dist = Vector3.Distance( transform.position, child.position );
-						if ( dist <= SnapDistance && !possible_other.ContainsKey( dist ) )
+						var childsnap = child.GetComponent<SnapRequirement>();
+						if ( dist <= SnapDistance && childsnap != null && childsnap.CanParent && !possible_other.ContainsKey( dist ) )
 						{
 							possible_other.Add( dist, child );
 						}
@@ -98,28 +129,22 @@ public class BuildingPart : MonoBehaviour
 
 				if ( possible_self.Count > 0 )
 				{
-					//Debug.Log( "possible: " + closest + " " + possible_self.Values[0] );
-					// If valid match then snap and return
-					//Transform offsetparent = transform.GetChild( 0 ).GetChild( 0 ).GetChild( 0 );
-					//offsetparent.transform.localPosition = -possible_self.Values[0].localPosition;
-					//transform.GetChild( 0 ).GetChild( 0 ).transform.localEulerAngles = -closestself.localEulerAngles;
-
 					// Snap
 					if ( NextSnap <= Time.time )
 					{
 						Transform visual = GetVisual();
-						visual.rotation = closest.parent.rotation;
+						visual.rotation = closest.rotation;
+						//visual.LookAt( closest );
 						visual.position = closest.position;
 						visual.localPosition -= possible_self.Values[0].localPosition + new Vector3( 0, 0.5f, 0 );
 
+						LastSnappedTo = closest.GetComponentInParent<BuildingPart>();
 						NextSnap = Time.time + BetweenSnaps;
 					}
 					else
 					{
 						closest = LastClosest;
 					}
-
-					//Follower.FollowTracking = GrabInteractableFollowAction.TrackingType.FollowRigidbody;
 
 					break;
 				}
@@ -134,16 +159,14 @@ public class BuildingPart : MonoBehaviour
 			}
 			LastClosest = closest;
 		}
-		else
-		{
-			//Follower.FollowTracking = GrabInteractableFollowAction.TrackingType.FollowTransform;
-		}
 
 		if ( LastClosest == null )
 		{
 			Transform visual = GetVisual();
 			visual.localPosition = Vector3.zero;
 			visual.localEulerAngles = Vector3.zero;
+
+			LastSnappedTo = null;
 		}
 	}
 
@@ -203,5 +226,24 @@ public class BuildingPart : MonoBehaviour
 		transform.rotation = visual.rotation;
 		visual.localPosition = Vector3.zero;
 		visual.localEulerAngles = Vector3.zero;
+
+		// Parent
+		if ( LastSnappedTo != null )
+		{
+			transform.SetParent( LastSnappedTo.transform );
+		}
+		else
+		{
+			transform.SetParent( null );
+		}
+
+		// Hide all spheres
+		foreach ( var part in Parts )
+		{
+			foreach ( var renderer in part.SnapPointsParent.GetComponentsInChildren<MeshRenderer>( true ) )
+			{
+				renderer.enabled = false;
+			}
+		}
 	}
 }

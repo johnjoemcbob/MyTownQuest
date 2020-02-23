@@ -833,13 +833,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 934794621702854244}
+  - component: {fileID: 424693412851945171}
   m_Layer: 0
-  m_Name: SnapPoint - North - Upper Right
+  m_Name: SnapPoint - North - Middle Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &934794621702854244
 Transform:
   m_ObjectHideFlags: 0
@@ -848,13 +849,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2918254027649990829}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.25, y: 0.25, z: 0}
+  m_LocalPosition: {x: -0.25, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 949437175315516323}
   m_Father: {fileID: 7145659634982721548}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &424693412851945171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2918254027649990829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39a97b134359ab948bd276d392e4ecad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NameContains: Prop
 --- !u!1 &3074849775069868971
 GameObject:
   m_ObjectHideFlags: 0
@@ -1132,13 +1146,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2267231501615650602}
+  - component: {fileID: 5201107246405316616}
   m_Layer: 0
-  m_Name: SnapPoint - North - Upper Left
+  m_Name: SnapPoint - North - Middle Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2267231501615650602
 Transform:
   m_ObjectHideFlags: 0
@@ -1147,13 +1162,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4262368478484521248}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.25, y: 0.25, z: 0}
+  m_LocalPosition: {x: 0.25, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 493928743720716133}
   m_Father: {fileID: 7145659634982721548}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &5201107246405316616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4262368478484521248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39a97b134359ab948bd276d392e4ecad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NameContains: Prop
 --- !u!1 &4373884621509937552
 GameObject:
   m_ObjectHideFlags: 0
@@ -1400,13 +1428,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 430441875904186682}
+  - component: {fileID: 5185362148091403997}
   m_Layer: 0
-  m_Name: SnapPoint - South - Upper Right
+  m_Name: SnapPoint - South - Middle Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &430441875904186682
 Transform:
   m_ObjectHideFlags: 0
@@ -1415,13 +1444,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5453015194025010804}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.25, y: 0.25, z: -0.5}
+  m_LocalPosition: {x: -0.25, y: 0, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5323233261276433770}
   m_Father: {fileID: 7145659634982721548}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &5185362148091403997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5453015194025010804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39a97b134359ab948bd276d392e4ecad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NameContains: Prop
 --- !u!1 &5688595059273406209
 GameObject:
   m_ObjectHideFlags: 0
@@ -1431,13 +1473,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4930250028127199396}
+  - component: {fileID: 4064677331259661273}
   m_Layer: 0
-  m_Name: SnapPoint - East - Upper Left
+  m_Name: SnapPoint - East - Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4930250028127199396
 Transform:
   m_ObjectHideFlags: 0
@@ -1446,13 +1489,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5688595059273406209}
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.5, y: 0.25, z: -0.25}
+  m_LocalPosition: {x: 0.5, y: 0, z: -0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5822355648381765536}
   m_Father: {fileID: 7145659634982721548}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+--- !u!114 &4064677331259661273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5688595059273406209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39a97b134359ab948bd276d392e4ecad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NameContains: Prop
 --- !u!65 &5231906965573741125
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1599,13 +1655,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2372682840214017456}
+  - component: {fileID: 7908776183058649704}
   m_Layer: 0
-  m_Name: SnapPoint - West - Upper Left
+  m_Name: SnapPoint - West - Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2372682840214017456
 Transform:
   m_ObjectHideFlags: 0
@@ -1614,13 +1671,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6855232476142561934}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0.5, y: 0.25, z: -0.25}
+  m_LocalPosition: {x: -0.5, y: 0, z: -0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1778386965096017333}
   m_Father: {fileID: 7145659634982721548}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &7908776183058649704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855232476142561934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39a97b134359ab948bd276d392e4ecad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NameContains: Prop
 --- !u!1 &6990705461084286055
 GameObject:
   m_ObjectHideFlags: 0
@@ -1788,13 +1858,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1523357463100749451}
+  - component: {fileID: 4355870217053842900}
   m_Layer: 0
-  m_Name: SnapPoint - South - Upper Left
+  m_Name: SnapPoint - South - Middle Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1523357463100749451
 Transform:
   m_ObjectHideFlags: 0
@@ -1803,13 +1874,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8484537728299534651}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.25, y: 0.25, z: -0.5}
+  m_LocalPosition: {x: 0.25, y: 0, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8198713973888071030}
   m_Father: {fileID: 7145659634982721548}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &4355870217053842900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8484537728299534651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39a97b134359ab948bd276d392e4ecad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NameContains: Prop
 --- !u!1 &9094332691256025877
 GameObject:
   m_ObjectHideFlags: 0
@@ -1958,15 +2042,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d83c7f8d8af5dfd41984fbccb0e5df1d, type: 3}
---- !u!1 &3433962756357850283 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -355100439398595823, guid: d83c7f8d8af5dfd41984fbccb0e5df1d,
-    type: 3}
-  m_PrefabInstance: {fileID: 6103939793646667706}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1283306165340990624 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: d83c7f8d8af5dfd41984fbccb0e5df1d,
+    type: 3}
+  m_PrefabInstance: {fileID: 6103939793646667706}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3433962756357850283 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -355100439398595823, guid: d83c7f8d8af5dfd41984fbccb0e5df1d,
     type: 3}
   m_PrefabInstance: {fileID: 6103939793646667706}
   m_PrefabAsset: {fileID: 0}
