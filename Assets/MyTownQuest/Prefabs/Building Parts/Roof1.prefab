@@ -256,7 +256,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5762591214513613897}
-  - component: {fileID: 6236891756455894297}
   m_Layer: 0
   m_Name: SnapZoneTrigger
   m_TagString: Untagged
@@ -282,19 +281,6 @@ Transform:
   m_Father: {fileID: 4733652497840894541}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6236891756455894297
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4476509419136820193}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.5, y: 1.5, z: 1.5}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4910877601956379409
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,15 +633,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fb2daa118d053b489b3d64b3b335b46, type: 3}
---- !u!4 &4733652497840894541 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 7fb2daa118d053b489b3d64b3b335b46,
-    type: 3}
-  m_PrefabInstance: {fileID: 345645857165269335}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &9212558457107126854 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -355100439398595823, guid: 7fb2daa118d053b489b3d64b3b335b46,
+    type: 3}
+  m_PrefabInstance: {fileID: 345645857165269335}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4733652497840894541 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 7fb2daa118d053b489b3d64b3b335b46,
     type: 3}
   m_PrefabInstance: {fileID: 345645857165269335}
   m_PrefabAsset: {fileID: 0}

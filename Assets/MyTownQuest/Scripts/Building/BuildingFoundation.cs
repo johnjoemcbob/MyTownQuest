@@ -91,7 +91,7 @@ public class BuildingFoundation : MonoBehaviour
 					// Visual there
 					Transform visual = part.GetVisual();
 					visual.rotation = transform.rotation;
-					visual.localEulerAngles = new Vector3( visual.localEulerAngles.x, 0, visual.localEulerAngles.z );
+					//visual.localEulerAngles = new Vector3( visual.localEulerAngles.x, 0, visual.localEulerAngles.z );
 					visual.position = Grid.CellToWorld( gridpos );
 
 					part.Snapped = Grid.CellToWorld( gridpos );
