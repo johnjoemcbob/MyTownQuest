@@ -18,9 +18,15 @@ public class BuildingPart : MonoBehaviour
 	[HideInInspector]
 	public List<BuildingPart> InSnapRangeOf = new List<BuildingPart>();
 	[HideInInspector]
-	public bool Spawned = false;
+	public List<Vector3Int> OccupiedCells = new List<Vector3Int>();
+	[HideInInspector]
+	public bool IsSpawned = false;
 
-	private IsGrabbedTracker Grabbed;
+	[HideInInspector]
+	public IsGrabbedTracker Grabbed;
+	[HideInInspector]
+	public CollisionShape CollisionShape;
+
 	private GrabInteractableFollowAction Follower;
 	private Transform LastClosest = null;
 	private BuildingPart LastSnappedTo = null;
@@ -34,6 +40,7 @@ public class BuildingPart : MonoBehaviour
 
 		Grabbed = GetComponent<IsGrabbedTracker>();
 		Follower = GetComponentInChildren<GrabInteractableFollowAction>();
+		CollisionShape = GetComponentInChildren<CollisionShape>();
 
 		SnapPointsParent = transform.FindChildren( "SnapZoneTrigger" )[0];
 
@@ -57,147 +64,14 @@ public class BuildingPart : MonoBehaviour
 		Follower.IsKinematicWhenInactive = true;
 	}
 
-	public void Update()
-	{
-		if ( !Spawned ) return;
-
-		if ( Grabbed.IsGrabbed && Vector3.Distance( Grabbed.LastGrabbedBy.transform.position, transform.position ) <= SnapDistance )
-		{
-			Transform closest = null;
-
-			// Hide all spheres
-			foreach ( var part in Parts )
-			{
-				foreach ( var renderer in part.SnapPointsParent.GetComponentsInChildren<MeshRenderer>( true ) )
-				{
-					renderer.enabled = false;
-				}
-			}
-
-			// Show spheres of those in snap range
-			foreach ( var snapable in InSnapRangeOf )
-			{
-				if ( snapable != null && snapable.SnapPointsParent != null )
-				{
-					foreach ( var renderer in snapable.SnapPointsParent.GetComponentsInChildren<MeshRenderer>( true ) )
-					{
-						renderer.enabled = true;
-					}
-				}
-			}
-
-			// Find all possible snap points
-			// Add to dictionary with distance
-			// Sort by closest first
-			SortedList<float, Transform> possible_other = new SortedList<float, Transform>();
-			foreach ( var snapable in InSnapRangeOf )
-			{
-				if ( snapable != null && !snapable.Grabbed.IsGrabbed )
-				{
-					foreach ( Transform child in snapable.SnapPointsParent )
-					{
-						float dist = Vector3.Distance( transform.position, child.position );
-						var childsnap = child.GetComponent<SnapRequirement>();
-						if ( dist <= SnapDistance && childsnap != null && childsnap.CanParent && !possible_other.ContainsKey( dist ) )
-						{
-							possible_other.Add( dist, child );
-						}
-					}
-				}
-			}
-
-			// While there are closest remaining and none matched, loop
-			while ( possible_other.Count > 0 )
-			{
-				closest = possible_other.Values[0];
-
-				// Do same list for self snap points, by closest & valid match, loop
-				SortedList<float, Transform> possible_self = new SortedList<float, Transform>();
-				foreach ( Transform child in SnapPointsParent )
-				{
-					var childsnap = child.GetComponent<SnapRequirement>();
-					var closesnap = closest.GetComponent<SnapRequirement>();
-					if ( childsnap != null && closesnap != null && closest.name.Contains( childsnap.NameContains ) && child.name.Contains( closesnap.NameContains ) )
-					{
-						float dist = Vector3.Distance( closest.position, child.position );
-						if ( !possible_self.ContainsKey( dist ) )
-						{
-							possible_self.Add( dist, child );
-						}
-					}
-				}
-
-				if ( possible_self.Count > 0 )
-				{
-					// Snap
-					if ( NextSnap <= Time.time )
-					{
-						Transform visual = GetVisual();
-						visual.rotation = closest.rotation;
-						//visual.LookAt( closest );
-						visual.position = closest.position;
-						visual.localPosition -= possible_self.Values[0].localPosition + new Vector3( 0, 0.5f, 0 );
-
-						LastSnappedTo = closest.GetComponentInParent<BuildingPart>();
-						NextSnap = Time.time + BetweenSnaps;
-					}
-					else
-					{
-						closest = LastClosest;
-					}
-
-					break;
-				}
-
-				// Otherwise loops and eventually exits update
-				possible_other.RemoveAt( 0 );
-			}
-
-			if ( LastClosest != closest )
-			{
-				MyTownQuest.SpawnResourceAudioSource( "swoosh3", transform.position, Random.Range( 0.8f, 1.2f ), 0.2f );
-			}
-			LastClosest = closest;
-		}
-
-		if ( LastClosest == null )
-		{
-			Transform visual = GetVisual();
-			visual.localPosition = Vector3.zero;
-			visual.localEulerAngles = Vector3.zero;
-
-			LastSnappedTo = null;
-		}
-	}
-
 	private void OnDestroy()
 	{
 		Parts.Remove( this );
 	}
 
-	private Transform GetVisual()
+	public Transform GetVisual()
 	{
 		return transform.GetChild( 0 ).GetChild( 0 ).GetChild( 0 );
-	}
-
-	// Another building part entered this one's zone of snapping
-	// Tell that one its in range
-	private void OnTriggerEnter( Collider other )
-	{
-		BuildingPart part = other.attachedRigidbody.GetComponent<BuildingPart>();
-		if ( part != null && part != this && Spawned && part.Spawned && !part.InSnapRangeOf.Contains( this ) )
-		{
-			part.InSnapRangeOf.Add( this );
-		}
-	}
-
-	private void OnTriggerExit( Collider other )
-	{
-		BuildingPart part = other.attachedRigidbody.GetComponent<BuildingPart>();
-		if ( part != null && part.InSnapRangeOf.Contains( this ) )
-		{
-			part.InSnapRangeOf.Remove( this );
-		}
 	}
 
 	public void OnGrab()
@@ -222,7 +96,7 @@ public class BuildingPart : MonoBehaviour
 
 		// Reset visual/anchor offsets
 		Transform visual = GetVisual();
-		transform.position = visual.position + transform.up * 0.05f;
+		transform.position = visual.position + visual.up * 0.05f;
 		transform.rotation = visual.rotation;
 		visual.localPosition = Vector3.zero;
 		visual.localEulerAngles = Vector3.zero;

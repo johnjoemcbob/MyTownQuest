@@ -6,7 +6,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6711139413081996216}
+  m_GameObject: {fileID: 6078236933459641047}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96240deea5db1004c9331751a8894f67, type: 3}
@@ -19,6 +19,7 @@ MonoBehaviour:
   InSnapRangeOf:
   - {fileID: 0}
   Spawned: 0
+  Grabbed: {fileID: 0}
 --- !u!1001 &6078236933459640988
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39,7 +40,7 @@ PrefabInstance:
     - target: {fileID: 3665000804444838829, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
         type: 3}
       propertyPath: followTracking
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3665000804444838829, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
         type: 3}
@@ -203,7 +204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00c8b8e0927a6ea4b9006ba0ccc45436, type: 3}
---- !u!1 &6711139413081996216 stripped
+--- !u!1 &6078236933459641047 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 682574569258989860, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
     type: 3}

@@ -265,6 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameContains: Top
+  CanParent: 1
 --- !u!1 &1275755850173932905
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,6 +469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameContains: Top
+  CanParent: 1
 --- !u!1 &1499986545778223985
 GameObject:
   m_ObjectHideFlags: 0
@@ -513,6 +515,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameContains: Top
+  CanParent: 1
 --- !u!1 &1526984787055880252
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,6 +640,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameContains: Bottom
+  CanParent: 1
 --- !u!1 &1791517103775669841
 GameObject:
   m_ObjectHideFlags: 0
@@ -823,6 +827,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameContains: Top
+  CanParent: 1
 --- !u!1 &2120358748136387601
 GameObject:
   m_ObjectHideFlags: 0
@@ -1007,6 +1012,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameContains: Bottom
+  CanParent: 1
 --- !u!1 &3572995285485956125
 GameObject:
   m_ObjectHideFlags: 0
@@ -1320,6 +1326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameContains: Bottom
+  CanParent: 1
 --- !u!1 &5325264160734577492
 GameObject:
   m_ObjectHideFlags: 0
@@ -1430,6 +1437,23 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &4416515480592823776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399339110472324017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6b89b25fe3a9d4b90ee625f77debe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Cells:
+  - {x: 0, y: 0, z: 0}
+  - {x: 1, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  - {x: 1, y: 0, z: 1}
 --- !u!65 &8137103819711121745
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1677,6 +1701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameContains: Bottom
+  CanParent: 1
 --- !u!1 &7924139840220504955
 GameObject:
   m_ObjectHideFlags: 0
@@ -2014,15 +2039,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: beddded4ba6731244b1d7e9cccde9866, type: 3}
---- !u!1 &1970589404879849897 stripped
+--- !u!1 &1399339110472324017 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: -355100439398595823, guid: beddded4ba6731244b1d7e9cccde9866,
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: beddded4ba6731244b1d7e9cccde9866,
     type: 3}
   m_PrefabInstance: {fileID: 6938532550080776888}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &2679688340690002338 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: beddded4ba6731244b1d7e9cccde9866,
+    type: 3}
+  m_PrefabInstance: {fileID: 6938532550080776888}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1970589404879849897 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -355100439398595823, guid: beddded4ba6731244b1d7e9cccde9866,
     type: 3}
   m_PrefabInstance: {fileID: 6938532550080776888}
   m_PrefabAsset: {fileID: 0}
