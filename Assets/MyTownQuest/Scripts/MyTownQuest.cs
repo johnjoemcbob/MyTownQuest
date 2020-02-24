@@ -343,7 +343,6 @@ public class MyTownQuest : MonoBehaviour
 	#region Input
 	public void OnLeftUseActivationStateChanged( bool change )
 	{
-		Debug.Log( "l " + change );
 		if ( change )
 		{
 			foreach ( var input in FindObjectsOfType<InputReceiver>() )
@@ -355,7 +354,6 @@ public class MyTownQuest : MonoBehaviour
 
 	public void OnRightUseActivationStateChanged( bool change )
 	{
-		Debug.Log( "r " + change );
 		if ( change )
 		{
 			foreach ( var input in FindObjectsOfType<InputReceiver>() )

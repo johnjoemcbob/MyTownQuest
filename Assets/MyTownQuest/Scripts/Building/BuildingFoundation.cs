@@ -39,7 +39,7 @@ public class BuildingFoundation : MonoBehaviour
 		BuildingPart part = other.attachedRigidbody.GetComponentInParent<BuildingPart>();
 		if ( part != null && part.IsSpawned )
 		{
-			part.transform.SetParent( transform );
+			//part.transform.SetParent( transform );
 		}
 	}
 
@@ -91,17 +91,31 @@ public class BuildingFoundation : MonoBehaviour
 					// Visual there
 					Transform visual = part.GetVisual();
 					visual.rotation = transform.rotation;
+					visual.localEulerAngles += part.transform.GetChild( 0 ).localEulerAngles; // Inherit yaw rotation still (from player input)
 					//visual.localEulerAngles = new Vector3( visual.localEulerAngles.x, 0, visual.localEulerAngles.z );
 					visual.position = Grid.CellToWorld( gridpos );
 
+					// Swish sound if new snap position
+					if ( part.Snapped != Grid.CellToWorld( gridpos ) || part.Foundation != this )
+					{
+						MyTownQuest.SpawnResourceAudioSource( "swoosh3", transform.position, Random.Range( 0.8f, 2.2f ), 0.2f );
+					}
+
+					// Flag as snapped
 					part.Snapped = Grid.CellToWorld( gridpos );
 					part.Foundation = this;
+					part.transform.SetParent( transform );
 
 					break;
 				}
 				else
 				{
+					Transform visual = part.GetVisual();
+					visual.localPosition = Vector3.zero;
+					visual.localEulerAngles = Vector3.zero;
+
 					part.Foundation = null;
+					part.transform.SetParent( null );
 				}
 			}
 		}
@@ -110,8 +124,13 @@ public class BuildingFoundation : MonoBehaviour
 	private void OnTriggerExit( Collider other )
 	{
 		BuildingPart part = other.attachedRigidbody.GetComponentInParent<BuildingPart>();
-		if ( part != null )
+		if ( part != null && part.IsSpawned && part.Grabbed.IsGrabbed )
 		{
+			Transform visual = part.GetVisual();
+			visual.localPosition = Vector3.zero;
+			visual.localEulerAngles = Vector3.zero;
+
+			part.Foundation = null;
 			part.transform.SetParent( null );
 		}
 	}
