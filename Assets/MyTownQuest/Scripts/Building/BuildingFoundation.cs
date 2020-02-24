@@ -7,18 +7,32 @@ public class BuildingFoundation : MonoBehaviour
 	[Header( "Variables" )]
 	public Vector3Int BuildableAreaSize = new Vector3Int( 10, 6, 10 );
 
+	[Header( "References" )]
+	public Plot LinkedPlot;
+	public Transform Foundation;
+	public Transform GridPlane;
+	public Transform TriggerZone;
+
 	private Grid Grid;
 
 	private bool[,,] GridCollision;
 
     void Start()
 	{
-		Grid = GetComponent<Grid>();
+		Grid = GetComponentInChildren<Grid>();
+
+		if ( LinkedPlot != null )
+		{
+			BuildableAreaSize = LinkedPlot.Size;
+		}
 
 		// Set proper buildable area size
-		transform.localPosition = new Vector3( -BuildableAreaSize.x, 0, -BuildableAreaSize.z ) / 2;
-		GetComponent<BoxCollider>().center = new Vector3( BuildableAreaSize.x, BuildableAreaSize.y, BuildableAreaSize.z ) / 2;
-		GetComponent<BoxCollider>().size = BuildableAreaSize;
+		Foundation.localScale = new Vector3( ( BuildableAreaSize.x / 2.0f ) + 0.5f, 0.5f, ( BuildableAreaSize.z / 2.0f ) + 0.5f );
+		GridPlane.localScale = new Vector3( ( BuildableAreaSize.x / 20.0f ), 0.5f, ( BuildableAreaSize.z / 20.0f ) );
+		GridPlane.GetComponent<MeshRenderer>().material.mainTextureScale = new Vector2( ( BuildableAreaSize.x / 4.0f ), ( BuildableAreaSize.z / 4.0f ) );
+		TriggerZone.localPosition = new Vector3( -BuildableAreaSize.x, 0, -BuildableAreaSize.z ) / 4;
+		TriggerZone.GetComponent<BoxCollider>().center = new Vector3( BuildableAreaSize.x, BuildableAreaSize.y, BuildableAreaSize.z ) / 2;
+		TriggerZone.GetComponent<BoxCollider>().size = BuildableAreaSize;
 
 		// Setup collision, all empty
 		GridCollision = new bool[BuildableAreaSize.x + 1, BuildableAreaSize.y + 1, BuildableAreaSize.z + 1];
@@ -133,6 +147,16 @@ public class BuildingFoundation : MonoBehaviour
 			part.Foundation = null;
 			part.transform.SetParent( null );
 		}
+	}
+
+	public void OnSnap( BuildingPart part )
+	{
+		LinkedPlot.OnSnap( part );
+	}
+
+	public void OnUnSnap( BuildingPart part )
+	{
+		LinkedPlot.OnUnSnap( part );
 	}
 
 	//private void OnDrawGizmos()

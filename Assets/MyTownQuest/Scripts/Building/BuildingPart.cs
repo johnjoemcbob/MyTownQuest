@@ -34,7 +34,7 @@ public class BuildingPart : MonoBehaviour
 	public CollisionShape CollisionShape;
 
 	private GrabInteractableFollowAction Follower;
-	private BuildingPart LastSnappedTo = null;
+	private BuildingFoundation LastSnappedTo = null;
 
 	//private void Awake()
 	//{
@@ -89,6 +89,11 @@ public class BuildingPart : MonoBehaviour
 	private void OnDestroy()
 	{
 		Parts.Remove( this );
+
+		if ( LastSnappedTo != null )
+		{
+			LastSnappedTo.OnUnSnap( this );
+		}
 	}
 
 	public Transform GetVisual()
@@ -144,8 +149,19 @@ public class BuildingPart : MonoBehaviour
 		if ( Foundation )
 		{
 			transform.rotation = Foundation.transform.rotation;
-			transform.localEulerAngles = new Vector3( transform.localEulerAngles.x, 0, transform.localEulerAngles.z );
+			//transform.localEulerAngles = new Vector3( 0, transform.localEulerAngles.y, 0 ); // what was the purpose of this??
 			transform.position = Snapped + Foundation.transform.up * 0.05f;
+
+			LastSnappedTo = Foundation;
+			Foundation.OnSnap( this );
+		}
+		else
+		{
+			if ( LastSnappedTo != null )
+			{
+				LastSnappedTo.OnUnSnap( this );
+				LastSnappedTo = null;
+			}
 		}
 
 		// Parent
@@ -165,6 +181,14 @@ public class BuildingPart : MonoBehaviour
 			{
 				renderer.enabled = false;
 			}
+		}
+	}
+	
+	public void OnColourChange()
+	{
+		if ( LastSnappedTo != null )
+		{
+			LastSnappedTo.LinkedPlot.GetBig( this ).GetComponentInChildren<MeshRenderer>().materials = GetVisual().GetComponentInChildren<MeshRenderer>().materials;
 		}
 	}
 }

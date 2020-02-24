@@ -61,6 +61,7 @@ public class PaintBrush : MonoBehaviour
 			GameObject particles = MyTownQuest.EmitParticleImpact( BristlesParent.position );
 			ParticleSystemRenderer sys = particles.GetComponentInChildren<ParticleSystemRenderer>();
 			sys.material.color = Colour;
+			part.OnColourChange();
 
 			MyTownQuest.SpawnResourceAudioSource( "splat1", BristlesParent.position, Random.Range( 0.8f, 1.2f ), 0.2f );
 		}
