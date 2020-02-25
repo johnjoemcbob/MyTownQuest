@@ -52,6 +52,7 @@ public class PaintBrush : MonoBehaviour
 			sys.material.color = bucket.PaintColour;
 
 			MyTownQuest.SpawnResourceAudioSource( "splat1", BristlesParent.position, Random.Range( 0.8f, 1.2f ), 0.2f );
+			MyTownQuest.VibrateController( GetComponent<IsGrabbedTracker>().LastGrabbedBy.name.Contains( "Left" ) );
 		}
 
 		// Building Part

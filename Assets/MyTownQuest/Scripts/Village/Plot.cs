@@ -25,29 +25,52 @@ public class Plot : MonoBehaviour
 	{
 		float scale = MapLoader.Instance.Scale * 2;
 
+		PartLerper lerp = null;
+
+		Vector3 targetpos = ( part.transform.localPosition + new Vector3( Size.x / 4.0f, -0.5f, Size.z / 4.0f ) ) * scale;
+		Vector3 targetang = part.transform.GetChild( 0 ).localEulerAngles;
+		Vector3 targetsca = Vector3.one * scale;
+
 		// Find or create
 		GameObject big = null;
 		if ( !Parts.ContainsKey( part ) )
 		{
 			big = Instantiate( part.GetVisual().gameObject, transform );
 			Parts.Add( part, big );
+
+			lerp = big.AddComponent( typeof( PartLerper ) ) as PartLerper;
+			lerp.StartPos = targetpos + Vector3.up * 5;
+			lerp.StartAng = Vector3.zero;
+			lerp.StartSca = Vector3.zero;
 		}
 		else
 		{
 			big = Parts[part];
+
+			lerp = big.GetComponent<PartLerper>();
+			lerp.StartPos = big.transform.localPosition;
+			lerp.StartAng = big.transform.localEulerAngles;
+			lerp.StartSca = big.transform.localScale;
 		}
 
-		// Set position
-		big.transform.localScale = Vector3.one * scale;
-		big.transform.localPosition = ( part.transform.localPosition + new Vector3( Size.x / 4.0f, -0.5f, Size.z / 4.0f ) ) * scale;
-		big.transform.localEulerAngles = part.transform.GetChild( 0 ).localEulerAngles;
+		// Lerp to new pos!
+		{
+			lerp.Duration = 0.2f;
+
+			lerp.TargetPos = targetpos;
+			lerp.TargetAng = targetang;
+			lerp.TargetSca = targetsca;
+		}
+		lerp.Play();
 	}
 
 	public void OnUnSnap( BuildingPart part )
 	{
 		if ( Parts.ContainsKey( part ) )
 		{
-			Destroy( Parts[part] );
+			Parts[part].GetComponent<PartLerper>().PlayBackwards();
+			Parts[part].GetComponent<PartLerper>().TargetPos = Parts[part].GetComponent<PartLerper>().StartPos + Vector3.up * 5;
+			Destroy( Parts[part], Parts[part].GetComponent<PartLerper>().Duration );
 
 			Parts.Remove( part );
 		}

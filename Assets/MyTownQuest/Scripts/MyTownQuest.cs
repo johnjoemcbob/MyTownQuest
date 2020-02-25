@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using VRTK.Prefabs.Interactions.Interactables.Grab.Action;
 using GoogleSheetsToUnity;
+using Zinnia.Haptics;
 
 // Main class with helpers
 public class MyTownQuest : MonoBehaviour
@@ -361,6 +362,13 @@ public class MyTownQuest : MonoBehaviour
 				input.OnInternalUse( "Right" );
 			}
 		}
+	}
+
+	public static void VibrateController( bool left )
+	{
+		Debug.Log( "HEIYL " + left );
+		FindObjectOfType<XRNodeHapticPulser>().Node = left ? UnityEngine.XR.XRNode.LeftHand : UnityEngine.XR.XRNode.RightHand;
+		FindObjectOfType<XRNodeHapticPulser>().Begin();
 	}
 	#endregion
 }
