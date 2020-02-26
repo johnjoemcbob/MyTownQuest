@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using VRTK.Prefabs.Interactions.Interactables.Grab.Action;
 using GoogleSheetsToUnity;
 using Zinnia.Haptics;
@@ -381,6 +382,23 @@ public class MyTownQuest : MonoBehaviour
 		FindObjectOfType<XRNodeHapticPulser>().Intensity = intensity;
 		FindObjectOfType<XRNodeHapticPulser>().Duration = duration;
 		FindObjectOfType<XRNodeHapticPulser>().Begin();
+	}
+	#endregion
+
+	#region Events
+	public void OnTeleported()
+	{
+		Debug.Log( "ON TELEPORT" );
+		StartCoroutine( DelayedFollow() );
+	}
+	IEnumerator DelayedFollow()
+	{
+		yield return new WaitForEndOfFrame();
+
+		GameObject playarea = GameObject.Find( "TeleportFollower" );
+		GameObject headset = Camera.main.gameObject;
+		playarea.transform.position = new Vector3( headset.transform.position.x, playarea.transform.position.y, headset.transform.position.z );
+		playarea.transform.eulerAngles = new Vector3( 0, headset.transform.eulerAngles.y, 0 );
 	}
 	#endregion
 }

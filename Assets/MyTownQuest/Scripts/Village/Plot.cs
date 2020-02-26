@@ -40,7 +40,7 @@ public class Plot : MonoBehaviour
 
 			lerp = big.AddComponent( typeof( PartLerper ) ) as PartLerper;
 			lerp.StartPos = targetpos + Vector3.up * 5;
-			lerp.StartAng = Vector3.zero;
+			lerp.StartAng = targetang + new Vector3( 0, 180, 0 );
 			lerp.StartSca = Vector3.zero;
 			lerp.CurrentState = PartLerper.State.In;
 		}
@@ -70,9 +70,11 @@ public class Plot : MonoBehaviour
 	{
 		if ( Parts.ContainsKey( part ) )
 		{
-			Parts[part].GetComponent<PartLerper>().CurrentState = PartLerper.State.Out;
-			Parts[part].GetComponent<PartLerper>().PlayBackwards();
-			Parts[part].GetComponent<PartLerper>().TargetPos = Parts[part].GetComponent<PartLerper>().StartPos + Vector3.up * 5;
+			PartLerper lerp = Parts[part].GetComponent<PartLerper>();
+			lerp.CurrentState = PartLerper.State.Out;
+			lerp.PlayBackwards();
+			lerp.TargetPos = lerp.StartPos + Vector3.up * 5;
+			lerp.TargetAng = lerp.StartAng + new Vector3( 0, 180, 0 );
 
 			Parts.Remove( part );
 		}
