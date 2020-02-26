@@ -175,13 +175,13 @@ public class BuildingPart : MonoBehaviour
 		//}
 
 		// Hide all spheres
-		foreach ( var part in Parts )
-		{
-			foreach ( var renderer in part.SnapPointsParent.GetComponentsInChildren<MeshRenderer>( true ) )
-			{
-				renderer.enabled = false;
-			}
-		}
+		//foreach ( var part in Parts )
+		//{
+		//	foreach ( var renderer in part.SnapPointsParent.GetComponentsInChildren<MeshRenderer>( true ) )
+		//	{
+		//		renderer.enabled = false;
+		//	}
+		//}
 	}
 	
 	public void OnColourChange()

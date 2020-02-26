@@ -67,7 +67,7 @@ public class PaintBrush : MonoBehaviour
 			sys.material.color = Colour;
 			part.OnColourChange();
 
-			MyTownQuest.SpawnResourceAudioSource( "splat1", BristlesParent.position, Random.Range( 0.8f, 1.2f ), 0.5f );
+			MyTownQuest.SpawnResourceAudioSource( "stroke" + Random.Range( 1, 5 + 1 ), BristlesParent.position, Random.Range( 0.8f, 1.2f ), 0.5f );
 		}
 	}
 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class CollisionShape : MonoBehaviour
 {
 	public Vector3Int[] Cells;
+	public bool MustBeGrounded = true;
 
 	void OnDrawGizmosSelected()
 	{

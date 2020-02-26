@@ -82,16 +82,19 @@ public class BuildingFoundation : MonoBehaviour
 				Vector3Int gridpos = Grid.WorldToCell( part.transform.position ) + horizontaloff;
 
 				// Cast downwards while level below has no collision issue
-				while ( gridpos.y > 0 )
+				if ( part.CollisionShape.MustBeGrounded )
 				{
-					Vector3Int off = new Vector3Int( 0, -1, 0 );
-					if ( !DoesCollide( gridpos, part, off ) )
+					while ( gridpos.y > 0 )
 					{
-						gridpos += off;
-					}
-					else
-					{
-						break;
+						Vector3Int off = new Vector3Int( 0, -1, 0 );
+						if ( !DoesCollide( gridpos, part, off ) )
+						{
+							gridpos += off;
+						}
+						else
+						{
+							break;
+						}
 					}
 				}
 
