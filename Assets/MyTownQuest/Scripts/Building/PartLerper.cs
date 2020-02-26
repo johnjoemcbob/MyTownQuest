@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class PartLerper : MonoBehaviour
 {
+	public enum State
+	{
+		In,
+		Move,
+		Out,
+	}
+
 	public float Duration;
 
 	public Vector3 StartPos;
@@ -12,6 +19,8 @@ public class PartLerper : MonoBehaviour
 	public Vector3 TargetPos;
 	public Vector3 TargetAng;
 	public Vector3 TargetSca;
+
+	public State CurrentState;
 
 	private float StartTime = 0;
 
@@ -35,6 +44,19 @@ public class PartLerper : MonoBehaviour
 	public void Play()
 	{
 		StartTime = Time.time;
+
+		switch ( CurrentState )
+		{
+			case State.In:
+				break;
+			case State.Move:
+				MyTownQuest.SpawnResourceAudioSource( "swoosh3", transform.position, Random.Range( 1, 2 ), 1 );
+				break;
+			case State.Out:
+				break;
+			default:
+				break;
+		}
 	}
 
 	public void PlayBackwards()
@@ -57,5 +79,23 @@ public class PartLerper : MonoBehaviour
 	public void Stop()
 	{
 		StartTime = 0;
+
+		switch ( CurrentState )
+		{
+			case State.In:
+				MyTownQuest.EmitParticleDust( transform.position );
+				MyTownQuest.SpawnResourceAudioSource( "impact1", transform.position, Random.Range( 1.2f, 2.2f ), 1 );
+				break;
+			case State.Move:
+				break;
+			case State.Out:
+				GameObject disappear = MyTownQuest.EmitParticleImpact( transform.position );
+				disappear.transform.localScale *= 5;
+				MyTownQuest.SpawnResourceAudioSource( "pop2", transform.position, Random.Range( 1, 1.4f ), 1 );
+				Destroy( gameObject );
+				break;
+			default:
+				break;
+		}
 	}
 }

@@ -47,12 +47,14 @@ public class PaintBrush : MonoBehaviour
 		var bucket = other.attachedRigidbody.GetComponent<PaintBucket>();
 		if ( bucket != null )
 		{
-			GameObject particles = MyTownQuest.EmitParticleImpact( BristlesParent.position );
+			GameObject particles = MyTownQuest.EmitParticleImpact( bucket.transform.position + bucket.transform.up * 0.2f );
+			particles.transform.LookAt( bucket.transform.position + bucket.transform.up * 5 );
 			ParticleSystemRenderer sys = particles.GetComponentInChildren<ParticleSystemRenderer>();
 			sys.material.color = bucket.PaintColour;
 
-			MyTownQuest.SpawnResourceAudioSource( "splat1", BristlesParent.position, Random.Range( 0.8f, 1.2f ), 0.2f );
-			MyTownQuest.VibrateController( GetComponent<IsGrabbedTracker>().LastGrabbedBy.name.Contains( "Left" ) );
+			MyTownQuest.SpawnResourceAudioSource( "splash1", BristlesParent.position, Random.Range( 0.8f, 2.2f ), 0.2f );
+			MyTownQuest.VibrateController( GetComponent<IsGrabbedTracker>().LastGrabbedBy.name.Contains( "Left" ), 10, Random.Range( 0.3f, 0.5f ) );
+			bucket.OnPaintBrush();
 		}
 
 		// Building Part
@@ -60,11 +62,12 @@ public class PaintBrush : MonoBehaviour
 		if ( part != null && part.IsSpawned )
 		{
 			GameObject particles = MyTownQuest.EmitParticleImpact( BristlesParent.position );
+			particles.transform.localScale *= 0.01f;
 			ParticleSystemRenderer sys = particles.GetComponentInChildren<ParticleSystemRenderer>();
 			sys.material.color = Colour;
 			part.OnColourChange();
 
-			MyTownQuest.SpawnResourceAudioSource( "splat1", BristlesParent.position, Random.Range( 0.8f, 1.2f ), 0.2f );
+			MyTownQuest.SpawnResourceAudioSource( "splat1", BristlesParent.position, Random.Range( 0.8f, 1.2f ), 0.5f );
 		}
 	}
 

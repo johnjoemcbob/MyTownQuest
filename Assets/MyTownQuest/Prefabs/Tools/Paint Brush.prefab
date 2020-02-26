@@ -34,8 +34,8 @@ MonoBehaviour:
   HorizontalAngle: 90
   VerticalAngle: 10
   BristleLerpSpeed: 15
-  ColourApplyLerpSpeed: 10
-  ColourGainLerpSpeed: 1
+  ColourApplyLerpSpeed: 5
+  ColourGainLerpSpeed: 100
   BristlesParent: {fileID: 5973533265428082196}
 --- !u!1 &3906399817407903574
 GameObject:

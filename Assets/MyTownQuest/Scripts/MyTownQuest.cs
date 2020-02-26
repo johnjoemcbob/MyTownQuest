@@ -312,7 +312,18 @@ public class MyTownQuest : MonoBehaviour
 		{
 			particle.transform.position = point;
 
-			Destroy( particle, 1 );
+			Destroy( particle, 1.5f );
+		}
+		return particle;
+	}
+
+	public static GameObject EmitParticleDust( Vector3 point )
+	{
+		GameObject particle = Instantiate( Resources.Load( "Prefabs/Particle Dust" ) ) as GameObject;
+		{
+			particle.transform.position = point;
+
+			Destroy( particle, 2 );
 		}
 		return particle;
 	}
@@ -364,10 +375,11 @@ public class MyTownQuest : MonoBehaviour
 		}
 	}
 
-	public static void VibrateController( bool left )
+	public static void VibrateController( bool left, float intensity = 1, float duration = 0.005f )
 	{
-		Debug.Log( "HEIYL " + left );
 		FindObjectOfType<XRNodeHapticPulser>().Node = left ? UnityEngine.XR.XRNode.LeftHand : UnityEngine.XR.XRNode.RightHand;
+		FindObjectOfType<XRNodeHapticPulser>().Intensity = intensity;
+		FindObjectOfType<XRNodeHapticPulser>().Duration = duration;
 		FindObjectOfType<XRNodeHapticPulser>().Begin();
 	}
 	#endregion
