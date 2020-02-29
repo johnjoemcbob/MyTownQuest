@@ -49,6 +49,7 @@ public class BuildingPart : MonoBehaviour
 
 	private GrabInteractableFollowAction Follower;
 	private BuildingFoundation LastSnappedTo = null;
+	private Transform Visual;
 
 	//private void Awake()
 	//{
@@ -79,6 +80,7 @@ public class BuildingPart : MonoBehaviour
 		CollisionShape = GetComponentInChildren<CollisionShape>();
 
 		SnapPointsParent = transform.FindChildren( "SnapZoneTrigger" )[0];
+		Visual = transform.GetChild( 0 ).GetChild( 0 ).GetChild( 0 );
 
 		// Disable spheres until snapable
 		foreach ( var renderer in SnapPointsParent.GetComponentsInChildren<MeshRenderer>( true ) )
@@ -122,7 +124,12 @@ public class BuildingPart : MonoBehaviour
 
 	public Transform GetVisual()
 	{
-		return transform.GetChild( 0 ).GetChild( 0 ).GetChild( 0 );
+		return Visual;
+	}
+
+	public Transform GetVisualParent()
+	{
+		return transform.GetChild( 0 ).GetChild( 0 );
 	}
 
 	public void UseWhileHeld()
@@ -166,6 +173,7 @@ public class BuildingPart : MonoBehaviour
 
 		// Reset visual/anchor offsets
 		Transform visual = GetVisual();
+		visual.SetParent( GetVisualParent() ); // TODO combine with BuildingFoundation.ResetVisual()
 		//transform.position = visual.position + visual.up * 0.05f;
 		//transform.rotation = visual.rotation;
 		visual.localPosition = Vector3.zero;

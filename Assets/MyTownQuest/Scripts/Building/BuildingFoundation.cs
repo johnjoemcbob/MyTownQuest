@@ -114,6 +114,7 @@ public class BuildingFoundation : MonoBehaviour
 
 					// Visual there
 					Transform visual = part.GetVisual();
+					visual.SetParent( transform );
 					visual.rotation = transform.rotation;
 					visual.localEulerAngles += part.transform.GetChild( 0 ).localEulerAngles; // Inherit yaw rotation still (from player input)
 					//visual.localEulerAngles = new Vector3( visual.localEulerAngles.x, 0, visual.localEulerAngles.z );
@@ -135,12 +136,9 @@ public class BuildingFoundation : MonoBehaviour
 				}
 				else
 				{
-					Transform visual = part.GetVisual();
-					visual.localPosition = Vector3.zero;
-					visual.localEulerAngles = Vector3.zero;
+					ResetVisual( part );
 
 					part.Foundation = null;
-					part.transform.SetParent( null );
 				}
 			}
 		}
@@ -151,13 +149,19 @@ public class BuildingFoundation : MonoBehaviour
 		BuildingPart part = other.attachedRigidbody.GetComponentInParent<BuildingPart>();
 		if ( part != null && part.IsSpawned && part.Grabbed.IsGrabbed )
 		{
-			Transform visual = part.GetVisual();
-			visual.localPosition = Vector3.zero;
-			visual.localEulerAngles = Vector3.zero;
-
+			ResetVisual( part );
 			part.DelayedRemoveFoundation = Time.time + 0.05f;
-			part.transform.SetParent( null );
 		}
+	}
+
+	// TODO makes more sense to be on BuildingPart class.
+	private void ResetVisual( BuildingPart part )
+	{
+		Transform visual = part.GetVisual();
+		visual.SetParent( part.GetVisualParent() );
+		visual.localPosition = Vector3.zero;
+		visual.localEulerAngles = Vector3.zero;
+		part.transform.SetParent( null );
 	}
 
 	public void OnSnap( BuildingPart part )
