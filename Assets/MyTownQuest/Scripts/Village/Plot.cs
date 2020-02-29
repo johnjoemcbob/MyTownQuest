@@ -6,7 +6,7 @@ public class Plot : MonoBehaviour
 {
 	public Vector3Int Size;
 
-	private Dictionary<BuildingPart, GameObject> Parts = new Dictionary<BuildingPart, GameObject>();
+	public Dictionary<BuildingPart, GameObject> Parts = new Dictionary<BuildingPart, GameObject>();
 
 	// Visualise via gizmos
 	void OnDrawGizmos()

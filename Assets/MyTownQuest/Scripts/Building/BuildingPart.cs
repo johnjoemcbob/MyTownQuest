@@ -5,6 +5,16 @@ using VRTK.Prefabs.Interactions.Interactables.Grab.Action;
 using Zinnia.Action;
 using Zinnia.Action.Collection;
 
+public class PlotPartComparer : IComparer<KeyValuePair<BuildingPart, GameObject>>
+{
+	public int Compare( KeyValuePair<BuildingPart, GameObject> a, KeyValuePair<BuildingPart, GameObject> b )
+	{
+		int ay = a.Key.SnappedCell.y;
+		int by = b.Key.SnappedCell.y;
+		return ay == by ? 0 : ( ay < by ? 1 : -1 );
+	}
+}
+
 public class BuildingPart : MonoBehaviour
 {
 	public static List<BuildingPart> Parts = new List<BuildingPart>();
@@ -24,9 +34,13 @@ public class BuildingPart : MonoBehaviour
 	[HideInInspector]
 	public bool IsSpawned = false;
 	[HideInInspector]
+	public Vector3Int SnappedCell;
+	[HideInInspector]
 	public Vector3 Snapped;
 	[HideInInspector]
 	public BuildingFoundation Foundation = null;
+	[HideInInspector]
+	public float DelayedRemoveFoundation = 0;
 
 	[HideInInspector]
 	public IsGrabbedTracker Grabbed;
@@ -84,6 +98,16 @@ public class BuildingPart : MonoBehaviour
 		Follower.WillInheritIsKinematicWhenInactiveFromConsumerRigidbody = false;
 		Follower.IsKinematicWhenActive = false;
 		Follower.IsKinematicWhenInactive = true;
+	}
+
+	private void Update()
+	{
+		if ( DelayedRemoveFoundation != 0 && DelayedRemoveFoundation <= Time.time && Foundation != null )
+		{
+			Foundation.DeOccupyGrid( this );
+			Foundation = null;
+			DelayedRemoveFoundation = 0;
+		}
 	}
 
 	private void OnDestroy()

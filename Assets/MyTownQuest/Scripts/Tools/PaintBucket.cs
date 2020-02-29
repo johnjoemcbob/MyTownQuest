@@ -36,7 +36,7 @@ public class PaintBucket : MonoBehaviour
 		}
 	}
 
-	public void OnPaintBrush()
+	public void OnPaintBrush( IsGrabbedTracker grab )
 	{
 		if ( HitTime == 0 )
 		{
@@ -49,5 +49,34 @@ public class PaintBucket : MonoBehaviour
 		transform.GetChild( 0 ).localScale = HitScale;
 		float range = HitAngle;
 		transform.GetChild( 0 ).localEulerAngles += new Vector3( Random.Range( -range, range ), Random.Range( -range, range ), Random.Range( -range, range ) );
+
+		// Effects
+		GameObject particles = MyTownQuest.EmitParticleImpact( transform.position + transform.up * 0.2f );
+		particles.transform.LookAt( transform.position + transform.up * 5 );
+		ParticleSystemRenderer sys = particles.GetComponentInChildren<ParticleSystemRenderer>();
+		sys.material.color = PaintColour;
+
+		MyTownQuest.SpawnResourceAudioSource( "splash1", transform.position, Random.Range( 0.8f, 2.2f ), 0.2f );
+		if ( grab.LastGrabbedBy != null )
+		{
+			MyTownQuest.VibrateController( grab.LastGrabbedBy.name.Contains( "Left" ), 10, Random.Range( 0.3f, 0.5f ) );
+		}
+	}
+
+	private void OnTriggerEnter( Collider other )
+	{
+		BuildingPart part = other.GetComponentInParent<BuildingPart>();
+		if ( part != null )
+		{
+			foreach ( var renderer in part.GetComponentsInChildren<Renderer>() )
+			{
+				foreach ( var material in renderer.materials )
+				{
+					material.color = PaintColour;
+				}
+			}
+
+			OnPaintBrush( other.GetComponentInParent<IsGrabbedTracker>() );
+		}
 	}
 }

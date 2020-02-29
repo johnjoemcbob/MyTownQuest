@@ -204,6 +204,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NameContains: Bottom
   CanParent: 1
+--- !u!1 &358838686404797208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1940169566051187300}
+  - component: {fileID: 1073789512228054200}
+  m_Layer: 0
+  m_Name: Colliders
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1940169566051187300
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358838686404797208}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5164247275278333959}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1073789512228054200
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358838686404797208}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &838859536514167058
 GameObject:
   m_ObjectHideFlags: 0
@@ -2752,6 +2796,7 @@ Transform:
   m_Children:
   - {fileID: 4729249417625994229}
   - {fileID: 6559685414730190256}
+  - {fileID: 1940169566051187300}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2776,6 +2821,7 @@ MonoBehaviour:
   - {x: 1, y: 1, z: 0}
   - {x: 0, y: 1, z: 1}
   - {x: 1, y: 1, z: 1}
+  MustBeGrounded: 1
 --- !u!1 &8240860122885889122
 GameObject:
   m_ObjectHideFlags: 0
@@ -2866,7 +2912,6 @@ GameObject:
   - component: {fileID: 4729249417625994229}
   - component: {fileID: 7113866571063337748}
   - component: {fileID: 7062212634789185738}
-  - component: {fileID: 377242596297864282}
   m_Layer: 0
   m_Name: mergedBlocks
   m_TagString: Untagged
@@ -2936,19 +2981,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &377242596297864282
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8774082241264881676}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &8862974397107033541
 GameObject:
   m_ObjectHideFlags: 0

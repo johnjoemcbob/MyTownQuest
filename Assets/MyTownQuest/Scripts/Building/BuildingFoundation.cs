@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using VRTK.Prefabs.Interactions.Interactables;
 
 public class BuildingFoundation : MonoBehaviour
 {
@@ -53,7 +55,7 @@ public class BuildingFoundation : MonoBehaviour
 		BuildingPart part = other.attachedRigidbody.GetComponentInParent<BuildingPart>();
 		if ( part != null && part.IsSpawned )
 		{
-			//part.transform.SetParent( transform );
+			part.DelayedRemoveFoundation = 0;
 		}
 	}
 
@@ -80,6 +82,11 @@ public class BuildingFoundation : MonoBehaviour
 			{
 				// Simplify to grid pos
 				Vector3Int gridpos = Grid.WorldToCell( part.transform.position ) + horizontaloff;
+
+				// Clamp into grid bounds first
+				gridpos.x = Mathf.Clamp( gridpos.x, 1, BuildableAreaSize.x );
+				gridpos.y = Mathf.Clamp( gridpos.y, 0, BuildableAreaSize.y );
+				gridpos.z = Mathf.Clamp( gridpos.z, 1, BuildableAreaSize.z );
 
 				// Cast downwards while level below has no collision issue
 				if ( part.CollisionShape.MustBeGrounded )
@@ -119,6 +126,7 @@ public class BuildingFoundation : MonoBehaviour
 					}
 
 					// Flag as snapped
+					part.SnappedCell = gridpos;
 					part.Snapped = Grid.CellToWorld( gridpos );
 					part.Foundation = this;
 					part.transform.SetParent( transform );
@@ -147,7 +155,7 @@ public class BuildingFoundation : MonoBehaviour
 			visual.localPosition = Vector3.zero;
 			visual.localEulerAngles = Vector3.zero;
 
-			part.Foundation = null;
+			part.DelayedRemoveFoundation = Time.time + 0.05f;
 			part.transform.SetParent( null );
 		}
 	}
@@ -160,6 +168,47 @@ public class BuildingFoundation : MonoBehaviour
 	public void OnUnSnap( BuildingPart part )
 	{
 		LinkedPlot.OnUnSnap( part );
+	}
+
+	public void OnShake( float mag )
+	{
+		// Detect upside down, with shaking, then start to remove parts
+		if ( transform.up.y <= -0.4f )
+		{
+			var customSortedValues = LinkedPlot.Parts.OrderBy(item => item, new PlotPartComparer()).ToArray();
+
+			// Easily "loop" to get first key, but only do ONE
+			foreach ( var keyval in customSortedValues )
+			{
+				var key = keyval.Key;
+				if ( !key.GetComponent<IsGrabbedTracker>().IsGrabbed )
+				{
+					Debug.Log( key.SnappedCell );
+
+					// Remove from grid
+					DeOccupyGrid( key );
+					LinkedPlot.OnUnSnap( key );
+
+					// Fall from plot
+					var rigid = key.GetComponent<Rigidbody>();
+					{
+						rigid.useGravity = true;
+						rigid.isKinematic = false;
+					}
+					//foreach ( var collider in key.GetComponentsInChildren<Collider>() )
+					//{
+					//	Destroy( collider );
+					//}
+					Destroy( key.GetComponent<InteractableFacade>() ); // Don't allow grabbing while in this delete phase
+					key.transform.SetParent( null );
+					Destroy( key.gameObject, 1 );
+
+					MyTownQuest.SpawnResourceAudioSource( "pop1", transform.position, Random.Range( 0.8f, 1.2f ) );
+
+					break; // Don't loop this
+				}
+			}
+		}
 	}
 
 	//private void OnDrawGizmos()
@@ -216,7 +265,7 @@ public class BuildingFoundation : MonoBehaviour
 		}
 	}
 
-	private void DeOccupyGrid( BuildingPart part )
+	public void DeOccupyGrid( BuildingPart part )
 	{
 		foreach ( var cell in part.OccupiedCells )
 		{
