@@ -114,12 +114,14 @@ public class BuildingPart : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		Parts.Remove( this );
+		Visual.SetParent( GetVisualParent() );
 
 		if ( LastSnappedTo != null )
 		{
 			LastSnappedTo.OnUnSnap( this );
 		}
+
+		Parts.Remove( this );
 	}
 
 	public Transform GetVisual()

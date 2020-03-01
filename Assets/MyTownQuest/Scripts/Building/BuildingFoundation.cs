@@ -67,7 +67,10 @@ public class BuildingFoundation : MonoBehaviour
 			// Blank any old cells
 			DeOccupyGrid( part );
 
-			// TODO; Check a few positions near this by offsetting the gridpos +1/-1 in each axis
+			// Check a few positions near this by offsetting the gridpos +1/-1 in each axis
+			bool placed = false;
+			Vector3Int closest = Vector3Int.zero;
+			float mindist = -1;
 			// Starting with 0,0,0 obviously. obviously.
 			Vector3Int[] attempts = new Vector3Int[]
 			{
@@ -76,17 +79,23 @@ public class BuildingFoundation : MonoBehaviour
 				new Vector3Int( 1, 0, 0 ),
 				new Vector3Int( 0, 0, -1 ),
 				new Vector3Int( 0, 0, 1 ),
-				new Vector3Int( 0, 1, 0 )
+				//new Vector3Int( 0, 1, 0 ),
 			};
 			foreach ( var horizontaloff in attempts )
 			{
 				// Simplify to grid pos
-				Vector3Int gridpos = Grid.WorldToCell( part.transform.position ) + horizontaloff;
+				Vector3 testat = part.transform.position;
+				//float size = 0.05f;
+				//Vector3 testat = part.transform.position +
+				//	part.transform.right	* size * -part.CollisionShape.Cells[0].x +
+				//	part.transform.up		* size * -part.CollisionShape.Cells[0].y +
+				//	part.transform.forward  * size * -part.CollisionShape.Cells[0].z;
+				Vector3Int gridpos = Grid.WorldToCell( testat ) + horizontaloff;
 
 				// Clamp into grid bounds first
-				gridpos.x = Mathf.Clamp( gridpos.x, 1, BuildableAreaSize.x );
+				gridpos.x = Mathf.Clamp( gridpos.x, 0, BuildableAreaSize.x );
 				gridpos.y = Mathf.Clamp( gridpos.y, 0, BuildableAreaSize.y );
-				gridpos.z = Mathf.Clamp( gridpos.z, 1, BuildableAreaSize.z );
+				gridpos.z = Mathf.Clamp( gridpos.z, 0, BuildableAreaSize.z );
 
 				// Cast downwards while level below has no collision issue
 				if ( part.CollisionShape.MustBeGrounded )
@@ -105,41 +114,52 @@ public class BuildingFoundation : MonoBehaviour
 					}
 				}
 
+				//Debug.Log( "test at; " + gridpos );
 				// Check its a valid position based on collision grid
 				if ( !DoesCollide( gridpos, part, Vector3Int.zero ) )
 				{
-					// Occupy the grid cells now
-					// Part keeps track of the cells it occupied? so if move it blanks those first?
-					OccupyGrid( gridpos, part );
-
-					// Visual there
-					Transform visual = part.GetVisual();
-					visual.SetParent( transform );
-					visual.rotation = transform.rotation;
-					visual.localEulerAngles += part.transform.GetChild( 0 ).localEulerAngles; // Inherit yaw rotation still (from player input)
-					//visual.localEulerAngles = new Vector3( visual.localEulerAngles.x, 0, visual.localEulerAngles.z );
-					visual.position = Grid.CellToWorld( gridpos );
-
-					// Swish sound if new snap position
-					if ( part.Snapped != Grid.CellToWorld( gridpos ) || part.Foundation != this )
+					float dist = Vector3.Distance( part.Grabbed.LastGrabbedBy.transform.position, Grid.CellToWorld( gridpos ) );
+					if ( mindist == -1 || dist < mindist )
 					{
-						MyTownQuest.SpawnResourceAudioSource( "swoosh3", transform.position, Random.Range( 0.8f, 2.2f ), 0.2f );
+						mindist = dist;
+						closest = gridpos;
+						//Debug.Log( "new closest; " + gridpos );
+
+						// Swish sound if new snap position
+						placed = true;
 					}
-
-					// Flag as snapped
-					part.SnappedCell = gridpos;
-					part.Snapped = Grid.CellToWorld( gridpos );
-					part.Foundation = this;
-					part.transform.SetParent( transform );
-
-					break;
 				}
-				else
+			}
+			if ( placed )
+			{
+				// Occupy the grid cells now
+				// Part keeps track of the cells it occupied? so if move it blanks those first?
+				OccupyGrid( closest, part );
+
+				if ( part.Snapped != Grid.CellToWorld( closest ) || part.Foundation != this )
 				{
-					ResetVisual( part );
-
-					part.Foundation = null;
+					MyTownQuest.SpawnResourceAudioSource( "swoosh3", transform.position, Random.Range( 0.8f, 2.2f ), 0.2f );
 				}
+
+				// Visual there
+				Transform visual = part.GetVisual();
+				visual.SetParent( transform );
+				visual.rotation = transform.rotation;
+				visual.localEulerAngles += part.transform.GetChild( 0 ).localEulerAngles; // Inherit yaw rotation still (from player input)
+																						  //visual.localEulerAngles = new Vector3( visual.localEulerAngles.x, 0, visual.localEulerAngles.z );
+				visual.position = Grid.CellToWorld( closest );
+
+				// Flag as snapped
+				part.SnappedCell = closest;
+				part.Snapped = Grid.CellToWorld( closest );
+				part.Foundation = this;
+				part.transform.SetParent( transform );
+			}
+			else
+			{
+				ResetVisual( part );
+
+				part.Foundation = null;
 			}
 		}
 	}
@@ -171,6 +191,7 @@ public class BuildingFoundation : MonoBehaviour
 
 	public void OnUnSnap( BuildingPart part )
 	{
+		DeOccupyGrid( part );
 		LinkedPlot.OnUnSnap( part );
 	}
 
@@ -215,26 +236,36 @@ public class BuildingFoundation : MonoBehaviour
 		}
 	}
 
-	//private void OnDrawGizmos()
-	//{
-	//	Gizmos.color = new Color( 1, 0, 0, 0.5f );
-	//	float size = 0.05f;
+	private void OnDrawGizmos()
+	{
+		Gizmos.color = new Color( 1, 0, 0, 0.5f );
+		float size = 0.05f;
 
-	//	// Draw a semitransparent blue cube at the transforms position
-	//	for ( int x = 1; x <= BuildableAreaSize.x; x++ )
-	//	{
-	//		for ( int y = 0; y <= BuildableAreaSize.y; y++ )
-	//		{
-	//			for ( int z = 1; z <= BuildableAreaSize.z; z++ )
-	//			{
-	//				if ( GridCollision[x, y, z] )
-	//				{
-	//					Gizmos.DrawCube( transform.position + transform.up * size + new Vector3( x, y, z ) * size - Vector3.one * size / 2, Vector3.one * size * 1.1f );
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
+		// Draw a semitransparent blue cube at the transforms position
+		for ( int x = 1; x <= BuildableAreaSize.x; x++ )
+		{
+			for ( int y = 0; y <= BuildableAreaSize.y; y++ )
+			{
+				for ( int z = 1; z <= BuildableAreaSize.z; z++ )
+				{
+					if ( GridCollision[x, y, z] )
+					{
+						Gizmos.DrawCube(
+							transform.position +
+							transform.up * size / 2 +
+							transform.right * BuildableAreaSize.x / 2 * -size +
+							transform.forward * BuildableAreaSize.z / 2 * size +
+
+							transform.right * x * size +
+							transform.up * y * size +
+							transform.forward * z * size,
+							Vector3.one * size * 1.1f
+						);
+					}
+				}
+			}
+		}
+	}
 
 	private bool DoesCollide( Vector3Int pos, BuildingPart part, Vector3Int off )
 	{
