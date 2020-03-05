@@ -15,7 +15,7 @@ public class PlotPartComparer : IComparer<KeyValuePair<BuildingPart, GameObject>
 	}
 }
 
-public class BuildingPart : MonoBehaviour
+public class BuildingPart : BasePart
 {
 	public static List<BuildingPart> Parts = new List<BuildingPart>();
 
@@ -31,8 +31,6 @@ public class BuildingPart : MonoBehaviour
 	public List<BuildingPart> InSnapRangeOf = new List<BuildingPart>();
 	[HideInInspector]
 	public List<Vector3Int> OccupiedCells = new List<Vector3Int>();
-	[HideInInspector]
-	public bool IsSpawned = false;
 	[HideInInspector]
 	public Vector3Int SnappedCell;
 	[HideInInspector]
@@ -83,10 +81,10 @@ public class BuildingPart : MonoBehaviour
 		Visual = transform.GetChild( 0 ).GetChild( 0 ).GetChild( 0 );
 
 		// Disable spheres until snapable
-		foreach ( var renderer in SnapPointsParent.GetComponentsInChildren<MeshRenderer>( true ) )
-		{
-			renderer.enabled = false;
-		}
+		//foreach ( var renderer in SnapPointsParent.GetComponentsInChildren<MeshRenderer>( true ) )
+		//{
+		//	renderer.enabled = false;
+		//}
 
 		// Force correct settings since prefab is overwritten somehow
 		StartCoroutine( CorrectSettings() );

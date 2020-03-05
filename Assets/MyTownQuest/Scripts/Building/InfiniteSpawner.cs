@@ -26,7 +26,7 @@ public class InfiniteSpawner : MonoBehaviour
 		if ( CurrentGrabbable && Vector3.Distance( CurrentGrabbable.transform.position, transform.position ) > MaxDistance )
 		{
 			// Flag to spawn a new one
-			CurrentGrabbable.GetComponent<BuildingPart>().IsSpawned = true;
+			CurrentGrabbable.GetComponent<BasePart>().IsSpawned = true;
 			CurrentGrabbable = null;
 		}
 
