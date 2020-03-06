@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class InfiniteSpawner : MonoBehaviour
 {
 	[Header( "Variables" )]
@@ -15,6 +16,9 @@ public class InfiniteSpawner : MonoBehaviour
 
     void Start()
     {
+		// Destroy visual editor helper when game starts
+		DestroyImmediate( transform.GetChild( 0 ).gameObject );
+
 		// Set display model as prefab
 		// Spawn a grabbable
 		SpawnGrabbable();
@@ -22,18 +26,32 @@ public class InfiniteSpawner : MonoBehaviour
 
 	void Update()
     {
-		// If out of range (i.e. has been grabbed and removed)
-		if ( CurrentGrabbable && Vector3.Distance( CurrentGrabbable.transform.position, transform.position ) > MaxDistance )
+		if ( Application.isPlaying )
 		{
-			// Flag to spawn a new one
-			CurrentGrabbable.GetComponent<BasePart>().IsSpawned = true;
-			CurrentGrabbable = null;
-		}
+			// If out of range (i.e. has been grabbed and removed)
+			if ( CurrentGrabbable && Vector3.Distance( CurrentGrabbable.transform.position, transform.position ) > MaxDistance )
+			{
+				// Flag to spawn a new one
+				CurrentGrabbable.GetComponent<BasePart>().IsSpawned = true;
+				CurrentGrabbable = null;
+			}
 
-		// Spawn a new one
-        if ( CurrentGrabbable == null )
+			// Spawn a new one
+			if ( CurrentGrabbable == null )
+			{
+				SpawnGrabbable();
+			}
+		}
+		else
 		{
-			SpawnGrabbable();
+			if ( transform.childCount > 0 && transform.GetChild( 0 ).name != ModelPrefab.name )
+			{
+				DestroyImmediate( transform.GetChild( 0 ).gameObject );
+			}
+			if ( transform.childCount == 0 )
+			{
+				GameObject visual = Instantiate( ModelPrefab, transform );
+			}
 		}
     }
 
