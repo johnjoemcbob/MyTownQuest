@@ -52,27 +52,32 @@ public class BuildingFoundation : MonoBehaviour
 
 	private void OnTriggerEnter( Collider other )
 	{
-		BuildingPart part = other.attachedRigidbody.GetComponentInParent<BuildingPart>();
-		if ( part != null && part.IsSpawned )
+		if ( other.attachedRigidbody )
 		{
-			part.DelayedRemoveFoundation = 0;
+			BuildingPart part = other.attachedRigidbody.GetComponentInParent<BuildingPart>();
+			if ( part != null && part.IsSpawned )
+			{
+				part.DelayedRemoveFoundation = 0;
+			}
 		}
 	}
 
 	private void OnTriggerStay( Collider other )
 	{
-		BuildingPart part = other.attachedRigidbody.GetComponentInParent<BuildingPart>();
-		if ( part != null && part.IsSpawned && part.Grabbed.IsGrabbed )
+		if ( other.attachedRigidbody )
 		{
-			// Blank any old cells
-			DeOccupyGrid( part );
+			BuildingPart part = other.attachedRigidbody.GetComponentInParent<BuildingPart>();
+			if ( part != null && part.IsSpawned && part.Grabbed.IsGrabbed )
+			{
+				// Blank any old cells
+				DeOccupyGrid( part );
 
-			// Check a few positions near this by offsetting the gridpos +1/-1 in each axis
-			bool placed = false;
-			Vector3Int closest = Vector3Int.zero;
-			float mindist = -1;
-			// Starting with 0,0,0 obviously. obviously.
-			Vector3Int[] attempts = new Vector3Int[]
+				// Check a few positions near this by offsetting the gridpos +1/-1 in each axis
+				bool placed = false;
+				Vector3Int closest = Vector3Int.zero;
+				float mindist = -1;
+				// Starting with 0,0,0 obviously. obviously.
+				Vector3Int[] attempts = new Vector3Int[]
 			{
 				new Vector3Int( 0, 0, 0 ),
 				new Vector3Int( -1, 0, 0 ),
@@ -81,96 +86,100 @@ public class BuildingFoundation : MonoBehaviour
 				new Vector3Int( 0, 0, 1 ),
 				//new Vector3Int( 0, 1, 0 ),
 			};
-			foreach ( var horizontaloff in attempts )
-			{
-				// Simplify to grid pos
-				Vector3 testat = part.transform.position;
-				//float size = 0.05f;
-				//Vector3 testat = part.transform.position +
-				//	part.transform.right	* size * -part.CollisionShape.Cells[0].x +
-				//	part.transform.up		* size * -part.CollisionShape.Cells[0].y +
-				//	part.transform.forward  * size * -part.CollisionShape.Cells[0].z;
-				Vector3Int gridpos = Grid.WorldToCell( testat ) + horizontaloff;
-
-				// Clamp into grid bounds first
-				gridpos.x = Mathf.Clamp( gridpos.x, 0, BuildableAreaSize.x );
-				gridpos.y = Mathf.Clamp( gridpos.y, 0, BuildableAreaSize.y );
-				gridpos.z = Mathf.Clamp( gridpos.z, 0, BuildableAreaSize.z );
-
-				// Cast downwards while level below has no collision issue
-				if ( part.CollisionShape.MustBeGrounded )
+				foreach ( var horizontaloff in attempts )
 				{
-					while ( gridpos.y > 0 )
+					// Simplify to grid pos
+					Vector3 testat = part.transform.position;
+					//float size = 0.05f;
+					//Vector3 testat = part.transform.position +
+					//	part.transform.right	* size * -part.CollisionShape.Cells[0].x +
+					//	part.transform.up		* size * -part.CollisionShape.Cells[0].y +
+					//	part.transform.forward  * size * -part.CollisionShape.Cells[0].z;
+					Vector3Int gridpos = Grid.WorldToCell( testat ) + horizontaloff;
+
+					// Clamp into grid bounds first
+					gridpos.x = Mathf.Clamp( gridpos.x, 0, BuildableAreaSize.x );
+					gridpos.y = Mathf.Clamp( gridpos.y, 0, BuildableAreaSize.y );
+					gridpos.z = Mathf.Clamp( gridpos.z, 0, BuildableAreaSize.z );
+
+					// Cast downwards while level below has no collision issue
+					if ( part.CollisionShape.MustBeGrounded )
 					{
-						Vector3Int off = new Vector3Int( 0, -1, 0 );
-						if ( !DoesCollide( gridpos, part, off ) )
+						while ( gridpos.y > 0 )
 						{
-							gridpos += off;
+							Vector3Int off = new Vector3Int( 0, -1, 0 );
+							if ( !DoesCollide( gridpos, part, off ) )
+							{
+								gridpos += off;
+							}
+							else
+							{
+								break;
+							}
 						}
-						else
+					}
+
+					//Debug.Log( "test at; " + gridpos );
+					// Check its a valid position based on collision grid
+					if ( !DoesCollide( gridpos, part, Vector3Int.zero ) )
+					{
+						float dist = Vector3.Distance( part.Grabbed.LastGrabbedBy.transform.position, Grid.CellToWorld( gridpos ) );
+						if ( mindist == -1 || dist < mindist )
 						{
-							break;
+							mindist = dist;
+							closest = gridpos;
+							//Debug.Log( "new closest; " + gridpos );
+
+							// Swish sound if new snap position
+							placed = true;
 						}
 					}
 				}
-
-				//Debug.Log( "test at; " + gridpos );
-				// Check its a valid position based on collision grid
-				if ( !DoesCollide( gridpos, part, Vector3Int.zero ) )
+				if ( placed )
 				{
-					float dist = Vector3.Distance( part.Grabbed.LastGrabbedBy.transform.position, Grid.CellToWorld( gridpos ) );
-					if ( mindist == -1 || dist < mindist )
+					// Occupy the grid cells now
+					// Part keeps track of the cells it occupied? so if move it blanks those first?
+					OccupyGrid( closest, part );
+
+					if ( part.Snapped != Grid.CellToWorld( closest ) || part.Foundation != this )
 					{
-						mindist = dist;
-						closest = gridpos;
-						//Debug.Log( "new closest; " + gridpos );
-
-						// Swish sound if new snap position
-						placed = true;
+						MyTownQuest.SpawnResourceAudioSource( "swoosh3", transform.position, Random.Range( 0.8f, 2.2f ), 0.2f );
 					}
-				}
-			}
-			if ( placed )
-			{
-				// Occupy the grid cells now
-				// Part keeps track of the cells it occupied? so if move it blanks those first?
-				OccupyGrid( closest, part );
 
-				if ( part.Snapped != Grid.CellToWorld( closest ) || part.Foundation != this )
+					// Visual there
+					Transform visual = part.GetVisual();
+					visual.SetParent( transform );
+					visual.rotation = transform.rotation;
+					visual.localEulerAngles += part.transform.GetChild( 0 ).localEulerAngles; // Inherit yaw rotation still (from player input)
+																							  //visual.localEulerAngles = new Vector3( visual.localEulerAngles.x, 0, visual.localEulerAngles.z );
+					visual.position = Grid.CellToWorld( closest );
+
+					// Flag as snapped
+					part.SnappedCell = closest;
+					part.Snapped = Grid.CellToWorld( closest );
+					part.Foundation = this;
+					part.transform.SetParent( transform );
+				}
+				else
 				{
-					MyTownQuest.SpawnResourceAudioSource( "swoosh3", transform.position, Random.Range( 0.8f, 2.2f ), 0.2f );
+					ResetVisual( part );
+
+					part.Foundation = null;
 				}
-
-				// Visual there
-				Transform visual = part.GetVisual();
-				visual.SetParent( transform );
-				visual.rotation = transform.rotation;
-				visual.localEulerAngles += part.transform.GetChild( 0 ).localEulerAngles; // Inherit yaw rotation still (from player input)
-																						  //visual.localEulerAngles = new Vector3( visual.localEulerAngles.x, 0, visual.localEulerAngles.z );
-				visual.position = Grid.CellToWorld( closest );
-
-				// Flag as snapped
-				part.SnappedCell = closest;
-				part.Snapped = Grid.CellToWorld( closest );
-				part.Foundation = this;
-				part.transform.SetParent( transform );
-			}
-			else
-			{
-				ResetVisual( part );
-
-				part.Foundation = null;
 			}
 		}
 	}
 
 	private void OnTriggerExit( Collider other )
 	{
-		BuildingPart part = other.attachedRigidbody.GetComponentInParent<BuildingPart>();
-		if ( part != null && part.IsSpawned && part.Grabbed.IsGrabbed )
+		if ( other.attachedRigidbody )
 		{
-			ResetVisual( part );
-			part.DelayedRemoveFoundation = Time.time + 0.05f;
+			BuildingPart part = other.attachedRigidbody.GetComponentInParent<BuildingPart>();
+			if ( part != null && part.IsSpawned && part.Grabbed.IsGrabbed )
+			{
+				ResetVisual( part );
+				part.DelayedRemoveFoundation = Time.time + 0.05f;
+			}
 		}
 	}
 
@@ -184,12 +193,12 @@ public class BuildingFoundation : MonoBehaviour
 		part.transform.SetParent( null );
 	}
 
-	public void OnSnap( BuildingPart part )
+	public void OnSnap( BasePart part, BasePart parent = null )
 	{
-		LinkedPlot.OnSnap( part );
+		LinkedPlot.OnSnap( part, parent );
 	}
 
-	public void OnUnSnap( BuildingPart part )
+	public void OnUnSnap( BasePart part )
 	{
 		DeOccupyGrid( part );
 		LinkedPlot.OnUnSnap( part );
@@ -290,17 +299,21 @@ public class BuildingFoundation : MonoBehaviour
 		return false;
 	}
 
-	private void OccupyGrid( Vector3Int pos, BuildingPart part )
+	private void OccupyGrid( Vector3Int pos, BasePart part )
 	{
-		foreach ( var cell in part.CollisionShape.Cells )
+		var buildpart = part as BuildingPart;
+		if ( buildpart != null && buildpart.CollisionShape != null ) // TODO TEMP, decor should also collide.
 		{
-			Vector3Int occupy = pos + cell;
-			GridCollision[occupy.x, occupy.y, occupy.z] = true;
-			part.OccupiedCells.Add( occupy );
+			foreach ( var cell in buildpart.CollisionShape.Cells )
+			{
+				Vector3Int occupy = pos + cell;
+				GridCollision[occupy.x, occupy.y, occupy.z] = true;
+				part.OccupiedCells.Add( occupy );
+			}
 		}
 	}
 
-	public void DeOccupyGrid( BuildingPart part )
+	public void DeOccupyGrid( BasePart part )
 	{
 		foreach ( var cell in part.OccupiedCells )
 		{

@@ -57,18 +57,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
---- !u!114 &5740124944788592953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6711139413081996216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06c8bc63320549045a22a10b91592828, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7031051814750572184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,6 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ed80c33ef636494f87e0e0a1ff82b62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsSpawned: 0
 --- !u!65 &2858783584377106459
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -134,7 +123,7 @@ PrefabInstance:
     - target: {fileID: 7048661043689824897, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7048661043689824897, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
         type: 3}

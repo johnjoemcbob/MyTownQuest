@@ -6,7 +6,7 @@ public class Plot : MonoBehaviour
 {
 	public Vector3Int Size;
 
-	public Dictionary<BuildingPart, GameObject> Parts = new Dictionary<BuildingPart, GameObject>();
+	public Dictionary<BasePart, GameObject> Parts = new Dictionary<BasePart, GameObject>();
 
 	// Visualise via gizmos
 	void OnDrawGizmos()
@@ -16,12 +16,12 @@ public class Plot : MonoBehaviour
 		Gizmos.DrawCube( transform.position + new Vector3( Size.x, Size.y, Size.z ) * size / 2, new Vector3( Size.x, Size.y, Size.z ) * size );
 	}
 
-	public GameObject GetBig( BuildingPart part )
+	public GameObject GetBig( BasePart part )
 	{
 		return Parts[part];
 	}
 
-	public void OnSnap( BuildingPart part )
+	public void OnSnap( BasePart part, BasePart parent = null )
 	{
 		float scale = MapLoader.Instance.Scale * 2;
 
@@ -30,12 +30,24 @@ public class Plot : MonoBehaviour
 		Vector3 targetpos = ( part.transform.localPosition + new Vector3( Size.x / 4.0f, -0.5f, Size.z / 4.0f ) ) * scale;
 		Vector3 targetang = part.transform.GetChild( 0 ).localEulerAngles;
 		Vector3 targetsca = Vector3.one * scale;
+		// Decor snaps differently.
+		if ( parent != null )
+		{
+			targetpos = part.GetVisual().localPosition;
+			targetang = part.GetVisual().localEulerAngles;
+			targetsca = Vector3.one;
+		}
 
 		// Find or create
 		GameObject big = null;
 		if ( !Parts.ContainsKey( part ) )
 		{
 			big = Instantiate( part.GetVisual().gameObject, transform );
+				// Decor snaps differently.
+				if ( parent != null )
+				{
+					big.transform.SetParent( Parts[parent].transform );
+				}
 			Parts.Add( part, big );
 
 			lerp = big.AddComponent( typeof( PartLerper ) ) as PartLerper;
@@ -66,7 +78,7 @@ public class Plot : MonoBehaviour
 		lerp.Play();
 	}
 
-	public void OnUnSnap( BuildingPart part )
+	public void OnUnSnap( BasePart part )
 	{
 		if ( Parts.ContainsKey( part ) )
 		{

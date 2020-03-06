@@ -5,16 +5,6 @@ using VRTK.Prefabs.Interactions.Interactables.Grab.Action;
 using Zinnia.Action;
 using Zinnia.Action.Collection;
 
-public class PlotPartComparer : IComparer<KeyValuePair<BuildingPart, GameObject>>
-{
-	public int Compare( KeyValuePair<BuildingPart, GameObject> a, KeyValuePair<BuildingPart, GameObject> b )
-	{
-		int ay = a.Key.SnappedCell.y;
-		int by = b.Key.SnappedCell.y;
-		return ay == by ? 0 : ( ay < by ? 1 : -1 );
-	}
-}
-
 public class BuildingPart : BasePart
 {
 	public static List<BuildingPart> Parts = new List<BuildingPart>();
@@ -30,10 +20,6 @@ public class BuildingPart : BasePart
 	[HideInInspector]
 	public List<BuildingPart> InSnapRangeOf = new List<BuildingPart>();
 	[HideInInspector]
-	public List<Vector3Int> OccupiedCells = new List<Vector3Int>();
-	[HideInInspector]
-	public Vector3Int SnappedCell;
-	[HideInInspector]
 	public Vector3 Snapped;
 	[HideInInspector]
 	public BuildingFoundation Foundation = null;
@@ -47,7 +33,6 @@ public class BuildingPart : BasePart
 
 	private GrabInteractableFollowAction Follower;
 	private BuildingFoundation LastSnappedTo = null;
-	private Transform Visual;
 
 	//private void Awake()
 	//{
@@ -68,8 +53,10 @@ public class BuildingPart : BasePart
 	//	}
 	//}
 
-	public void Start()
+	public override void Start()
 	{
+		base.Start();
+
 		// Track this part
 		Parts.Add( this );
 
@@ -78,7 +65,6 @@ public class BuildingPart : BasePart
 		CollisionShape = GetComponentInChildren<CollisionShape>();
 
 		SnapPointsParent = transform.FindChildren( "SnapZoneTrigger" )[0];
-		Visual = transform.GetChild( 0 ).GetChild( 0 ).GetChild( 0 );
 
 		// Disable spheres until snapable
 		//foreach ( var renderer in SnapPointsParent.GetComponentsInChildren<MeshRenderer>( true ) )
@@ -120,16 +106,6 @@ public class BuildingPart : BasePart
 		}
 
 		Parts.Remove( this );
-	}
-
-	public Transform GetVisual()
-	{
-		return Visual;
-	}
-
-	public Transform GetVisualParent()
-	{
-		return transform.GetChild( 0 ).GetChild( 0 );
 	}
 
 	public void UseWhileHeld()
