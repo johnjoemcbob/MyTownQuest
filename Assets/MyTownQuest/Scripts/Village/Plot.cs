@@ -23,13 +23,17 @@ public class Plot : MonoBehaviour
 
 	public void OnSnap( BasePart part, BasePart parent = null )
 	{
-		float scale = MapLoader.Instance.Scale * 2;
+		float scale = MapLoader.Instance.Scale;
 
 		PartLerper lerp = null;
 
-		Vector3 targetpos = ( part.transform.localPosition + new Vector3( Size.x / 4.0f, -0.5f, Size.z / 4.0f ) ) * scale;
+		//Vector3 targetpos = ( part.transform.localPosition + new Vector3( Size.x / 4.0f, -0.5f, Size.z / 4.0f ) ) * scale;
+		Vector3 targetpos =
+			transform.right * ( part.SnappedCell.x ) * scale +
+			new Vector3( 0, part.SnappedCell.y * scale, 0 ) +
+			transform.forward * ( part.SnappedCell.z ) * scale;
 		Vector3 targetang = part.transform.GetChild( 0 ).localEulerAngles;
-		Vector3 targetsca = Vector3.one * scale;
+		Vector3 targetsca = Vector3.one * scale * 2;
 		// Decor snaps differently.
 		if ( parent != null )
 		{

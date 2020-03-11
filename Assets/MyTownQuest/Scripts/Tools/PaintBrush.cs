@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VRTK;
 
 public class PaintBrush : MonoBehaviour
 {
@@ -24,6 +25,11 @@ public class PaintBrush : MonoBehaviour
 	{
 		Kinematic = GetComponent<KinematicVelocity>();
 		Colour = BristlesParent.GetComponentInChildren<MeshRenderer>().material.color;
+
+		var interact = GetComponent<VRTK_InteractableObject>();
+		//interact.InteractableObjectGrabbed += OnGrab;
+		//interact.InteractableObjectUngrabbed += OnUnGrab;
+		interact.InteractableObjectUsed += OnUseWhileHeld;
 	}
 
 	private void Update()
@@ -44,14 +50,14 @@ public class PaintBrush : MonoBehaviour
 	private void OnTriggerEnter( Collider other )
 	{
 		// Bucket
-		var bucket = other.attachedRigidbody.GetComponent<PaintBucket>();
+		var bucket = other.GetComponentInParent<PaintBucket>();
 		if ( bucket != null )
 		{
 			bucket.OnPaintBrush( GetComponent<IsGrabbedTracker>() );
 		}
 
 		// Building Part
-		var part = other.attachedRigidbody.GetComponent<BuildingPart>();
+		var part = other.GetComponentInParent<BuildingPart>();
 		if ( part != null && part.IsSpawned )
 		{
 			GameObject particles = MyTownQuest.EmitParticleImpact( BristlesParent.position );
@@ -67,7 +73,7 @@ public class PaintBrush : MonoBehaviour
 	private void OnTriggerStay( Collider other )
 	{
 		// Bucket
-		var bucket = other.attachedRigidbody.GetComponent<PaintBucket>();
+		var bucket = other.GetComponentInParent<PaintBucket>();
 		if ( bucket != null )
 		{
 			Colour = Color.Lerp( Colour, bucket.PaintColour, Time.deltaTime * ColourGainLerpSpeed );
@@ -80,7 +86,7 @@ public class PaintBrush : MonoBehaviour
 		}
 
 		// Building Part
-		var part = other.attachedRigidbody.GetComponent<BuildingPart>();
+		var part = other.GetComponentInParent<BuildingPart>();
 		if ( part != null && part.IsSpawned )
 		{
 			foreach ( var ren in part.GetComponentsInChildren<MeshRenderer>() )
@@ -91,7 +97,7 @@ public class PaintBrush : MonoBehaviour
 		}
 	}
 
-	public void UseWhileHeld()
+	public void OnUseWhileHeld( object sender, InteractableObjectEventArgs e )
 	{
 		MaterialEdit = ( MaterialEdit == 1 ) ? 0 : 1;
 
@@ -100,6 +106,6 @@ public class PaintBrush : MonoBehaviour
 			{
 				scale = 0.5f;
 			}
-		transform.localScale = new Vector3( scale, scale, 1 );
+		transform.localScale = new Vector3( scale, 1, scale );
 	}
 }

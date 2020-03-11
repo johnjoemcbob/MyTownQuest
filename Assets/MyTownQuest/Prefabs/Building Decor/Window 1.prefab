@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3883057168817992732}
   m_Layer: 0
-  m_Name: Window
+  m_Name: Window 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,7 +71,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 831962160555383831}
-  m_Mesh: {fileID: -3145058497754134291, guid: abfa9c2361ed4ba4084de62c50bc1371, type: 3}
+  m_Mesh: {fileID: -3145058497754134291, guid: 5d4b4186235d8264fb53d50dda871908, type: 3}
 --- !u!23 &1173874466090042577
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -90,8 +90,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -407617382302988920, guid: abfa9c2361ed4ba4084de62c50bc1371, type: 3}
-  - {fileID: -6271897200390792742, guid: abfa9c2361ed4ba4084de62c50bc1371, type: 3}
+  - {fileID: 2100000, guid: f8bb48ea7e71d0b4f995feb5c2ac5db2, type: 2}
+  - {fileID: 2100000, guid: 07cba82632e8223438411be94d2ffcbf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -59,11 +59,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76928072f37a0c749bb14cb7f110a115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 0}
-  relativeTo: {fileID: 0}
-  isEstimating: 1
-  velocityAverageFrames: 5
-  angularVelocityAverageFrames: 10
   Acceleration: {x: 0, y: 0, z: 0}
   AngularAcceleration: {x: 0, y: 0, z: 0}
 --- !u!1 &2422854357957646625
@@ -842,6 +837,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5675843315199822840, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
+        type: 3}
+      propertyPath: ignoredColliders.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5675843315199822840, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
+        type: 3}
+      propertyPath: ignoredColliders.Array.data[0]
+      value: 
+      objectReference: {fileID: 9193177813844811529}
     - target: {fileID: 5760948833205790505, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
         type: 3}
       propertyPath: m_Layer
@@ -1051,21 +1056,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8373613580861651002, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.147
-      objectReference: {fileID: 0}
-    - target: {fileID: 8373613580861651002, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.818
-      objectReference: {fileID: 0}
-    - target: {fileID: 8373613580861651002, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.536
       objectReference: {fileID: 0}
     - target: {fileID: 8373613580861651002, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
         type: 3}

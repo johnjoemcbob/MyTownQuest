@@ -667,6 +667,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roof4
       objectReference: {fileID: 0}
+    - target: {fileID: 6977104686344395735, guid: cba6ddf2e6bf2324f80c5f379f03e732,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1ea2569100e772840ba0352c539e9019, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cba6ddf2e6bf2324f80c5f379f03e732, type: 3}
 --- !u!4 &8112515962479797707 stripped

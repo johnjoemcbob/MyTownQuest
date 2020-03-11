@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using VRTK.Prefabs.Interactions.Interactables;
 
 public class BuildingFoundation : MonoBehaviour
 {
@@ -233,7 +232,6 @@ public class BuildingFoundation : MonoBehaviour
 					//{
 					//	Destroy( collider );
 					//}
-					Destroy( key.GetComponent<InteractableFacade>() ); // Don't allow grabbing while in this delete phase
 					key.transform.SetParent( null );
 					Destroy( key.gameObject, 1 );
 
@@ -245,36 +243,36 @@ public class BuildingFoundation : MonoBehaviour
 		}
 	}
 
-	private void OnDrawGizmos()
-	{
-		Gizmos.color = new Color( 1, 0, 0, 0.5f );
-		float size = 0.05f;
+	//private void OnDrawGizmos()
+	//{
+	//	Gizmos.color = new Color( 1, 0, 0, 0.5f );
+	//	float size = 0.05f;
 
-		// Draw a semitransparent blue cube at the transforms position
-		for ( int x = 1; x <= BuildableAreaSize.x; x++ )
-		{
-			for ( int y = 0; y <= BuildableAreaSize.y; y++ )
-			{
-				for ( int z = 1; z <= BuildableAreaSize.z; z++ )
-				{
-					if ( GridCollision[x, y, z] )
-					{
-						Gizmos.DrawCube(
-							transform.position +
-							transform.up * size / 2 +
-							transform.right * BuildableAreaSize.x / 2 * -size +
-							transform.forward * BuildableAreaSize.z / 2 * size +
+	//	// Draw a semitransparent blue cube at the transforms position
+	//	for ( int x = 1; x <= BuildableAreaSize.x; x++ )
+	//	{
+	//		for ( int y = 0; y <= BuildableAreaSize.y; y++ )
+	//		{
+	//			for ( int z = 1; z <= BuildableAreaSize.z; z++ )
+	//			{
+	//				if ( GridCollision[x, y, z] )
+	//				{
+	//					Gizmos.DrawCube(
+	//						transform.position +
+	//						transform.up * size / 2 +
+	//						transform.right * BuildableAreaSize.x / 2 * -size +
+	//						transform.forward * BuildableAreaSize.z / 2 * size +
 
-							transform.right * x * size +
-							transform.up * y * size +
-							transform.forward * z * size,
-							Vector3.one * size * 1.1f
-						);
-					}
-				}
-			}
-		}
-	}
+	//						transform.right * x * size +
+	//						transform.up * y * size +
+	//						transform.forward * z * size,
+	//						Vector3.one * size * 1.1f
+	//					);
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 
 	private bool DoesCollide( Vector3Int pos, BuildingPart part, Vector3Int off )
 	{

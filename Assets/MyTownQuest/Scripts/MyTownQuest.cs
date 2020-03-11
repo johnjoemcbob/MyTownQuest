@@ -4,9 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using VRTK.Prefabs.Interactions.Interactables.Grab.Action;
 using GoogleSheetsToUnity;
-using Zinnia.Haptics;
 
 // Main class with helpers
 public class MyTownQuest : MonoBehaviour
@@ -72,11 +70,11 @@ public class MyTownQuest : MonoBehaviour
 					{
 						// Physics Grab
 						case 0:
-							bool physics = bool.Parse( val );
-							foreach ( var obj in FindObjectsOfType<GrabInteractableFollowAction>() )
-							{
-								obj.FollowTracking = physics ? GrabInteractableFollowAction.TrackingType.FollowRigidbody : GrabInteractableFollowAction.TrackingType.FollowTransform;
-							}
+							//bool physics = bool.Parse( val );
+							//foreach ( var obj in FindObjectsOfType<GrabInteractableFollowAction>() )
+							//{
+							//	obj.FollowTracking = physics ? GrabInteractableFollowAction.TrackingType.FollowRigidbody : GrabInteractableFollowAction.TrackingType.FollowTransform;
+							//}
 
 							break;
 						default:
@@ -126,7 +124,7 @@ public class MyTownQuest : MonoBehaviour
 						case 3:
 							offset = bool.Parse( val );
 
-							obj.GetComponentInChildren<GrabInteractableFollowAction>().GrabOffset = offset ? GrabInteractableFollowAction.OffsetType.PrecisionPoint : GrabInteractableFollowAction.OffsetType.OrientationHandle;
+							//obj.GetComponentInChildren<GrabInteractableFollowAction>().GrabOffset = offset ? GrabInteractableFollowAction.OffsetType.PrecisionPoint : GrabInteractableFollowAction.OffsetType.OrientationHandle;
 
 							break;
 						default:
@@ -378,10 +376,11 @@ public class MyTownQuest : MonoBehaviour
 
 	public static void VibrateController( bool left, float intensity = 1, float duration = 0.005f )
 	{
-		FindObjectOfType<XRNodeHapticPulser>().Node = left ? UnityEngine.XR.XRNode.LeftHand : UnityEngine.XR.XRNode.RightHand;
-		FindObjectOfType<XRNodeHapticPulser>().Intensity = intensity;
-		FindObjectOfType<XRNodeHapticPulser>().Duration = duration;
-		FindObjectOfType<XRNodeHapticPulser>().Begin();
+		// TODO FIX
+		//FindObjectOfType<XRNodeHapticPulser>().Node = left ? UnityEngine.XR.XRNode.LeftHand : UnityEngine.XR.XRNode.RightHand;
+		//FindObjectOfType<XRNodeHapticPulser>().Intensity = intensity;
+		//FindObjectOfType<XRNodeHapticPulser>().Duration = duration;
+		//FindObjectOfType<XRNodeHapticPulser>().Begin();
 	}
 	#endregion
 

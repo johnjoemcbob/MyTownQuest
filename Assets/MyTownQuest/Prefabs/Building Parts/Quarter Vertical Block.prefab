@@ -1041,6 +1041,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Quarter Vertical Block
       objectReference: {fileID: 0}
+    - target: {fileID: 6977104686344395735, guid: b487724616828864b97e17a3c4e8197e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 687914a4cf9af2c44a87da55043adddd, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b487724616828864b97e17a3c4e8197e, type: 3}
 --- !u!4 &5432491933049978302 stripped

@@ -1,9 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using VRTK.Prefabs.Interactions.Interactables.Grab.Action;
-using Zinnia.Action;
-using Zinnia.Action.Collection;
 
 public class PlotPartComparer : IComparer<KeyValuePair<BasePart, GameObject>>
 {
@@ -30,6 +27,11 @@ public class BasePart : MonoBehaviour
 	public virtual void Start()
 	{
 		Visual = transform.GetChild( 0 ).GetChild( 0 ).GetChild( 0 );
+
+		foreach ( var collider in GetComponentsInChildren<Collider>() )
+		{
+			collider.isTrigger = true;
+		}
 	}
 
 	public Transform GetVisual()

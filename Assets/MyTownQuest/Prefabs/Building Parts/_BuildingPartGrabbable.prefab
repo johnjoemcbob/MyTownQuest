@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1467523324150298002}
   - component: {fileID: 1747790253663626473}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Interactable.FloatAction.Receiver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,8 +28,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 6078236933459640327}
-  m_RootOrder: 3
+  m_Father: {fileID: 2337141049041926822}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1747790253663626473
 MonoBehaviour:
@@ -63,20 +63,20 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6078236933459641080}
+  m_GameObject: {fileID: 6711139413081996216}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96240deea5db1004c9331751a8894f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsSpawned: 0
+  SnappedCell: {x: 0, y: 0, z: 0}
+  OccupiedCells: []
   DestroyDistance: 0.1
   SnapDistance: 0.8
   BetweenSnaps: 0
-  SnapPointsParent: {fileID: 0}
   InSnapRangeOf:
   - {fileID: 0}
-  OccupiedCells: []
-  IsSpawned: 0
   Snapped: {x: 0, y: 0, z: 0}
   Foundation: {fileID: 0}
   DelayedRemoveFoundation: 0
@@ -88,9 +88,9 @@ BoxCollider:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6078236933459640948}
+  m_GameObject: {fileID: 1669701576126522117}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
@@ -112,6 +112,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 682574569258989860, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3665000804444838829, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
         type: 3}
       propertyPath: followTracking
@@ -131,6 +136,11 @@ PrefabInstance:
         type: 3}
       propertyPath: isKinematicWhenInactive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859882032985792921, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7048661043689824897, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
         type: 3}
@@ -347,21 +357,26 @@ PrefabInstance:
       propertyPath: m_UseGravity
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9041133700247791945, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00c8b8e0927a6ea4b9006ba0ccc45436, type: 3}
---- !u!1 &6078236933459641080 stripped
+--- !u!1 &6711139413081996216 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 682574569258989860, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
     type: 3}
   m_PrefabInstance: {fileID: 6078236933459640988}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &6078236933459640327 stripped
+--- !u!4 &2337141049041926822 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8373613580861651002, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
     type: 3}
   m_PrefabInstance: {fileID: 6078236933459640988}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6078236933459640948 stripped
+--- !u!1 &1669701576126522117 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4859882032985792921, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
     type: 3}

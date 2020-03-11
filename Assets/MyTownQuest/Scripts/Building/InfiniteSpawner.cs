@@ -16,12 +16,15 @@ public class InfiniteSpawner : MonoBehaviour
 
     void Start()
     {
-		// Destroy visual editor helper when game starts
-		DestroyImmediate( transform.GetChild( 0 ).gameObject );
+		if ( Application.isPlaying )
+		{
+			// Destroy visual editor helper when game starts
+			DestroyImmediate( transform.GetChild( 0 ).gameObject );
 
-		// Set display model as prefab
-		// Spawn a grabbable
-		SpawnGrabbable();
+			// Set display model as prefab
+			// Spawn a grabbable
+			SpawnGrabbable();
+		}
 	}
 
 	void Update()

@@ -1,21 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using VRTK.Prefabs.Interactions.Interactors;
+using VRTK;
 
 public class IsGrabbedTracker : MonoBehaviour
 {
 	public bool IsGrabbed = false;
-	public InteractorFacade LastGrabbedBy;
+	public GameObject LastGrabbedBy;
 
-	public void OnGrab( InteractorFacade grab )
+	private VRTK_InteractableObject Interact;
+
+	private void Start()
 	{
-		IsGrabbed = true;
-		LastGrabbedBy = grab;
+		Interact = GetComponent<VRTK_InteractableObject>();
 	}
 
-	public void OnUnGrab( InteractorFacade grab )
+	private void Update()
 	{
-		IsGrabbed = false;
+		IsGrabbed = Interact.GetGrabbingObject() != null;
+		if ( IsGrabbed )
+		{
+			LastGrabbedBy = Interact.GetGrabbingObject();
+		}
 	}
+
+	//public void OnGrab( InteractorFacade grab )
+	//{
+	//	IsGrabbed = true;
+	//	LastGrabbedBy = grab;
+	//}
+
+	//public void OnUnGrab( InteractorFacade grab )
+	//{
+	//	IsGrabbed = false;
+	//}
 }

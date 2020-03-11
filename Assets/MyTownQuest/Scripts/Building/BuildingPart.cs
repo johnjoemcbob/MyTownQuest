@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using VRTK.Prefabs.Interactions.Interactables.Grab.Action;
-using Zinnia.Action;
-using Zinnia.Action.Collection;
+using VRTK;
 
 public class BuildingPart : BasePart
 {
@@ -13,9 +11,6 @@ public class BuildingPart : BasePart
 	public float DestroyDistance = 0.1f;
 	public float SnapDistance = 0.05f;
 	public float BetweenSnaps = 0.1f;
-
-	[Header( "References" )]
-	public Transform SnapPointsParent;
 
 	[HideInInspector]
 	public List<BuildingPart> InSnapRangeOf = new List<BuildingPart>();
@@ -31,7 +26,6 @@ public class BuildingPart : BasePart
 	[HideInInspector]
 	public CollisionShape CollisionShape;
 
-	private GrabInteractableFollowAction Follower;
 	private BuildingFoundation LastSnappedTo = null;
 
 	//private void Awake()
@@ -61,29 +55,17 @@ public class BuildingPart : BasePart
 		Parts.Add( this );
 
 		Grabbed = GetComponent<IsGrabbedTracker>();
-		Follower = GetComponentInChildren<GrabInteractableFollowAction>();
 		CollisionShape = GetComponentInChildren<CollisionShape>();
 
-		SnapPointsParent = transform.FindChildren( "SnapZoneTrigger" )[0];
-
+		var interact = GetComponent<VRTK_InteractableObject>();
+		interact.InteractableObjectGrabbed += OnGrab;
+		interact.InteractableObjectUngrabbed += OnUnGrab;
+		interact.InteractableObjectUsed += OnUseWhileHeld;
 		// Disable spheres until snapable
 		//foreach ( var renderer in SnapPointsParent.GetComponentsInChildren<MeshRenderer>( true ) )
 		//{
 		//	renderer.enabled = false;
 		//}
-
-		// Force correct settings since prefab is overwritten somehow
-		StartCoroutine( CorrectSettings() );
-	}
-
-	private IEnumerator CorrectSettings()
-	{
-		yield return new WaitForSeconds( 0.5f );
-
-		// Force correct settings since prefab is overwritten somehow
-		Follower.WillInheritIsKinematicWhenInactiveFromConsumerRigidbody = false;
-		Follower.IsKinematicWhenActive = false;
-		Follower.IsKinematicWhenInactive = true;
 	}
 
 	private void Update()
@@ -108,16 +90,6 @@ public class BuildingPart : BasePart
 		Parts.Remove( this );
 	}
 
-	public void UseWhileHeld()
-	{
-		Vector3 rotate = new Vector3( 0, 90, 0 );
-		transform.GetChild( 0 ).localEulerAngles += rotate;
-		for ( int cell = 0; cell < CollisionShape.Cells.Length; cell++ )
-		{
-			CollisionShape.Cells[cell] = RotatePointAroundPivot( CollisionShape.Cells[cell], Vector3.one * 0.5f, rotate );
-		}
-	}
-
 	// From: https://answers.unity.com/questions/532297/rotate-a-vector-around-a-certain-point.html
 	private Vector3Int RotatePointAroundPivot( Vector3Int point, Vector3 pivot, Vector3 angle )
 	{
@@ -127,12 +99,22 @@ public class BuildingPart : BasePart
 		return new Vector3Int( Mathf.RoundToInt( rotpoint.x ), Mathf.RoundToInt( rotpoint.y ), Mathf.RoundToInt( rotpoint.z ) );
 	}
 
-	public void OnGrab()
+	public void OnUseWhileHeld( object sender, InteractableObjectEventArgs e )
+	{
+		Vector3 rotate = new Vector3( 0, 90, 0 );
+		transform.GetChild( 0 ).localEulerAngles += rotate;
+		for ( int cell = 0; cell < CollisionShape.Cells.Length; cell++ )
+		{
+			CollisionShape.Cells[cell] = RotatePointAroundPivot( CollisionShape.Cells[cell], Vector3.one * 0.5f, rotate );
+		}
+	}
+
+	public void OnGrab( object sender, InteractableObjectEventArgs e )
 	{
 		transform.GetComponentInChildren<Collider>().isTrigger = false;
 	}
 
-	public void OnUnGrab()
+	public void OnUnGrab( object sender, InteractableObjectEventArgs e )
 	{
 		transform.GetComponentInChildren<Collider>().isTrigger = true;
 
@@ -156,6 +138,7 @@ public class BuildingPart : BasePart
 		visual.localEulerAngles = Vector3.zero;
 		if ( Foundation )
 		{
+			transform.SetParent( Foundation.transform );
 			transform.rotation = Foundation.transform.rotation;
 			//transform.localEulerAngles = new Vector3( 0, transform.localEulerAngles.y, 0 ); // what was the purpose of this??
 			transform.position = Snapped + Foundation.transform.up * 0.05f;
@@ -170,6 +153,7 @@ public class BuildingPart : BasePart
 				LastSnappedTo.OnUnSnap( this );
 				LastSnappedTo = null;
 			}
+			transform.SetParent( null );
 		}
 
 		// Parent

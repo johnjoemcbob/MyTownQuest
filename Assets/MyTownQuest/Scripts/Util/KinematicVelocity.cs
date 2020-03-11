@@ -1,18 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Zinnia.Tracking.Velocity;
+using VRTK;
 
 // Basically just auto applies the sources/relatives.
 // So not everything needs to exist in the scene on load...
-public class KinematicVelocity : AverageVelocityEstimator
+public class KinematicVelocity : VRTK_VelocityEstimator
 {
 	[HideInInspector]
 	public Vector3 Velocity
 	{
 		get
 		{
-			return DoGetVelocity();
+			return GetVelocityEstimate();
 		}
 	}
 	[HideInInspector]
@@ -20,7 +20,7 @@ public class KinematicVelocity : AverageVelocityEstimator
 	{
 		get
 		{
-			return DoGetAngularVelocity();
+			return GetAngularVelocityEstimate();
 		}
 	}
 	[HideInInspector]
@@ -31,12 +31,6 @@ public class KinematicVelocity : AverageVelocityEstimator
 	private float oldTime;
 	private Vector3 oldVelocity;
 	private Vector3 oldAngularVelocity;
-
-	private void Start()
-	{
-		Source = gameObject;
-		RelativeTo = transform.parent.gameObject;
-	}
 
 	// https://forum.unity.com/threads/manually-calculating-acceleration-and-velocity.443537/
 	private void Update()

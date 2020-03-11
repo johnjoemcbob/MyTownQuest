@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VRTK;
 
 public class DecorPart : BasePart
 {
@@ -17,6 +18,10 @@ public class DecorPart : BasePart
 		base.Start();
 
 		GrabTrack = GetComponent<IsGrabbedTracker>();
+
+		var interact = GetComponent<VRTK_InteractableObject>();
+		interact.InteractableObjectGrabbed += OnGrab;
+		interact.InteractableObjectUngrabbed += OnUnGrab;
 
 		//Visual = transform.GetChild( 0 ).GetChild( 0 );
 	}
@@ -71,14 +76,14 @@ public class DecorPart : BasePart
 		}
 	}
 
-	public void OnGrab()
+	public void OnGrab( object sender, InteractableObjectEventArgs e )
 	{
 		DecorsHeld.Add( this );
 
 		ToggleSnapSpheres();
 	}
 
-	public void OnUnGrab()
+	public void OnUnGrab( object sender, InteractableObjectEventArgs e )
 	{
 		DecorsHeld.Remove( this );
 

@@ -36,6 +36,7 @@ public class ShakeDetection : MonoBehaviour
 	void Update()
 	{
 		Vector3 acceleration = Kinematic.Acceleration + Kinematic.AngularAcceleration;
+
 		if ( !float.IsNaN( acceleration.x ) )
 		{
 			lowPassValue = Vector3.Lerp( lowPassValue, acceleration, lowPassFilterFactor );

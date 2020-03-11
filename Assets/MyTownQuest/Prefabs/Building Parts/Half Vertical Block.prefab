@@ -1931,6 +1931,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Half Vertical Block
       objectReference: {fileID: 0}
+    - target: {fileID: 6977104686344395735, guid: d83c7f8d8af5dfd41984fbccb0e5df1d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 687914a4cf9af2c44a87da55043adddd, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d83c7f8d8af5dfd41984fbccb0e5df1d, type: 3}
 --- !u!4 &1283306165340990624 stripped
