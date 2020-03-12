@@ -77,14 +77,14 @@ public class BuildingFoundation : MonoBehaviour
 				float mindist = -1;
 				// Starting with 0,0,0 obviously. obviously.
 				Vector3Int[] attempts = new Vector3Int[]
-			{
-				new Vector3Int( 0, 0, 0 ),
-				new Vector3Int( -1, 0, 0 ),
-				new Vector3Int( 1, 0, 0 ),
-				new Vector3Int( 0, 0, -1 ),
-				new Vector3Int( 0, 0, 1 ),
-				//new Vector3Int( 0, 1, 0 ),
-			};
+				{
+					new Vector3Int( 0, 0, 0 ),
+					new Vector3Int( -1, 0, 0 ),
+					new Vector3Int( 1, 0, 0 ),
+					new Vector3Int( 0, 0, -1 ),
+					new Vector3Int( 0, 0, 1 ),
+					//new Vector3Int( 0, 1, 0 ),
+				};
 				foreach ( var horizontaloff in attempts )
 				{
 					// Simplify to grid pos
@@ -140,7 +140,7 @@ public class BuildingFoundation : MonoBehaviour
 					// Part keeps track of the cells it occupied? so if move it blanks those first?
 					OccupyGrid( closest, part );
 
-					if ( part.Snapped != Grid.CellToWorld( closest ) || part.Foundation != this )
+					if ( part.SnappedCell != closest || part.Foundation != this )
 					{
 						MyTownQuest.SpawnResourceAudioSource( "swoosh3", transform.position, Random.Range( 0.8f, 2.2f ), 0.2f );
 					}
@@ -157,7 +157,7 @@ public class BuildingFoundation : MonoBehaviour
 					part.SnappedCell = closest;
 					part.Snapped = Grid.CellToWorld( closest );
 					part.Foundation = this;
-					part.transform.SetParent( transform );
+					//part.transform.SetParent( transform );
 				}
 				else
 				{
@@ -189,7 +189,7 @@ public class BuildingFoundation : MonoBehaviour
 		visual.SetParent( part.GetVisualParent() );
 		visual.localPosition = Vector3.zero;
 		visual.localEulerAngles = Vector3.zero;
-		part.transform.SetParent( null );
+		//part.transform.SetParent( null );
 	}
 
 	public void OnSnap( BasePart part, BasePart parent = null )

@@ -61,6 +61,10 @@ public class BuildingPart : BasePart
 		interact.InteractableObjectGrabbed += OnGrab;
 		interact.InteractableObjectUngrabbed += OnUnGrab;
 		interact.InteractableObjectUsed += OnUseWhileHeld;
+
+		var box = GetComponentInChildren<BoxCollider>();
+		box.isTrigger = true;
+
 		// Disable spheres until snapable
 		//foreach ( var renderer in SnapPointsParent.GetComponentsInChildren<MeshRenderer>( true ) )
 		//{

@@ -8,6 +8,7 @@ public class FeedbackMicController : MonoBehaviour
 
 	[Header( "Variables" )]
 	public float waitTimeForStartRecording = 4;
+	public float LerpSpeed = 5;
 	public float HeadLerpSpeed = 5;
 	public float HeadLerpDist = 0.05f;
 
@@ -32,7 +33,9 @@ public class FeedbackMicController : MonoBehaviour
 	private float micRecordingTime;
 
 	private Vector3 InitialPos;
+	private Quaternion InitialRot;
 	private Vector3 InitialHeadScale;
+	private int LastBeep = 0;
 
 	void Start()
 	{
@@ -43,7 +46,8 @@ public class FeedbackMicController : MonoBehaviour
 		feedbackManager.FeedbackFailedDueToError += FeedbackManager_FeedbackFailedDueToError;
 
 		RecordingIndicator.SetActive( false );
-		InitialPos = transform.position;
+		InitialPos = transform.localPosition;
+		InitialRot = transform.localRotation;
 		InitialHeadScale = MicHead.localScale;
 	}
 
@@ -82,9 +86,23 @@ public class FeedbackMicController : MonoBehaviour
 				}
 				else
 				{
-					infoText.text = "Start speaking in " + Mathf.Ceil( waitTimeForStartRecording + ( timeGrabbed - Time.time ) ).ToString( "0" ) + "...";
+					int time = Mathf.CeilToInt( waitTimeForStartRecording + ( timeGrabbed - Time.time ) );
+					infoText.text = "Start speaking in " + time.ToString( "0" ) + "...";
+
+					if ( time < LastBeep )
+					{
+						MyTownQuest.SpawnResourceAudioSource( "beep", transform.position, 0.8f + LastBeep / 20.0f, 0.2f );
+						LastBeep = time;
+					}
 				}
 			}
+		}
+
+		// Lerp home
+		if ( !isGrabbed )
+		{
+			transform.localPosition = Vector3.Lerp( transform.localPosition, InitialPos, Time.deltaTime * LerpSpeed );
+			transform.localRotation = Quaternion.Lerp( transform.localRotation, InitialRot, Time.deltaTime * LerpSpeed );
 		}
 	}
 
@@ -92,6 +110,7 @@ public class FeedbackMicController : MonoBehaviour
 	{
 		isGrabbed = true;
 		timeGrabbed = Time.time;
+		LastBeep = 5;
 
 		if ( Application.isMobilePlatform && !PermissionHelper.CheckForPermission( PermissionHelper.Permissions.RECORD_AUDIO ) )
 		{

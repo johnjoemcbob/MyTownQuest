@@ -7,6 +7,7 @@ public class DecorPart : BasePart
 {
 	public static List<DecorPart> DecorsHeld = new List<DecorPart>();
 	public static float MaxDistance = 0.1f;
+	public static float ColliderMult = 3;
 
 	private IsGrabbedTracker GrabTrack;
 
@@ -24,6 +25,11 @@ public class DecorPart : BasePart
 		interact.InteractableObjectUngrabbed += OnUnGrab;
 
 		//Visual = transform.GetChild( 0 ).GetChild( 0 );
+
+		var box = GetComponentInChildren<BoxCollider>();
+		box.isTrigger = true;
+		box.size = new Vector3( box.size.x, box.size.y, box.size.z * ColliderMult );
+		box.center = new Vector3( box.center.x, box.center.y, box.size.z / 2 );
 	}
 
 	private void Update()
@@ -52,13 +58,11 @@ public class DecorPart : BasePart
 				Visual.SetParent( closest.Part.GetVisual() );
 				Visual.position = closest.transform.position;
 				Visual.rotation = closest.transform.rotation;
-				//Visual.localScale = Vector3.one;
 				SnapTo = closest;
 			}
 			else
 			{
 				// Unsnap
-				//transform.SetParent( null );
 				SnapTo = null;
 
 				// Return visual
@@ -67,13 +71,13 @@ public class DecorPart : BasePart
 				Visual.localEulerAngles = Vector3.zero;
 			}
 		}
-		else
-		{
-			// Constantly have collider/grabbable follow the visual when not grabbed
-			transform.position = Visual.position;
-			transform.rotation = Visual.rotation;
-			transform.localScale = Vector3.one;
-		}
+		//else
+		//{
+		//	// Constantly have collider/grabbable follow the visual when not grabbed
+		//	transform.position = Visual.position;
+		//	transform.rotation = Visual.rotation;
+		//	transform.localScale = Vector3.one;
+		//}
 	}
 
 	public void OnGrab( object sender, InteractableObjectEventArgs e )
@@ -89,26 +93,32 @@ public class DecorPart : BasePart
 
 		if ( SnapTo )
 		{
-			SnapTo.Part.Foundation.OnSnap( this, SnapTo.Part );
+			if ( SnapTo.Part.Foundation != null )
+			{
+				SnapTo.Part.Foundation.OnSnap( this, SnapTo.Part );
+			}
 			LastSnappedTo = SnapTo;
 
-			// Return visual
-			//Visual.SetParent( transform.GetChild( 0 ) );
-			//Visual.localPosition = Vector3.zero;
-			//Visual.localEulerAngles = Vector3.zero;
-
 			// Snap real object
-			//transform.SetParent( SnapTo.Part.GetVisual() );
+			transform.SetParent( SnapTo.Part.GetVisual() );
 
 			// Don't snap grabbable as this seems to cause issues, a grabbable being a child of another grabbable
 			// Just move to same position for later.
 			transform.position = Visual.position;
 			transform.rotation = Visual.rotation;
 			transform.localScale = Vector3.one;
+
+			// Return visual
+			Visual.SetParent( transform.GetChild( 0 ) );
+			Visual.localPosition = Vector3.zero;
+			Visual.localEulerAngles = Vector3.zero;
 		}
 		else if ( LastSnappedTo )
 		{
-			LastSnappedTo.Part.Foundation.OnUnSnap( this );
+			if ( LastSnappedTo.Part.Foundation != null )
+			{
+				LastSnappedTo.Part.Foundation.OnUnSnap( this );
+			}
 			LastSnappedTo = null;
 		}
 
@@ -121,11 +131,11 @@ public class DecorPart : BasePart
 
 		foreach ( var snap in FindObjectsOfType<DecorSnapLogic>() )
 		{
+			snap.gameObject.SetActive( true );
 			if ( snap.GetComponentInParent<BuildingPart>().IsSpawned )
 			{
 				var mesh = snap.GetComponentInChildren<MeshRenderer>( true );
 				mesh.enabled = on;
-				mesh.transform.parent.gameObject.SetActive( on );
 
 				// Quick fix for previously incorrect snap points, if this is the first new grab - reset all colours
 				if ( DecorsHeld.Count == 1 )

@@ -92,7 +92,11 @@ public class Plot : MonoBehaviour
 			lerp.TargetPos = lerp.StartPos + Vector3.up * 5;
 			lerp.TargetAng = lerp.StartAng + new Vector3( 0, 180, 0 );
 
-			Parts.Remove( part );
+			// Remove all and any decor attached also
+			foreach ( var child in part.GetComponentsInChildren<BasePart>() )
+			{
+				Parts.Remove( child );
+			}
 		}
 	}
 }

@@ -13,25 +13,27 @@ public class IsGrabbedTracker : MonoBehaviour
 	private void Start()
 	{
 		Interact = GetComponent<VRTK_InteractableObject>();
+		Interact.InteractableObjectGrabbed += OnGrab;
+		Interact.InteractableObjectUngrabbed += OnUnGrab;
 	}
 
-	private void Update()
+	//private void Update()
+	//{
+	//	IsGrabbed = Interact.GetGrabbingObject() != null;
+	//	if ( IsGrabbed )
+	//	{
+	//		LastGrabbedBy = Interact.GetGrabbingObject();
+	//	}
+	//}
+
+	public void OnGrab( object sender, InteractableObjectEventArgs e )
 	{
-		IsGrabbed = Interact.GetGrabbingObject() != null;
-		if ( IsGrabbed )
-		{
-			LastGrabbedBy = Interact.GetGrabbingObject();
-		}
+		IsGrabbed = true;
+		LastGrabbedBy = e.interactingObject;
 	}
 
-	//public void OnGrab( InteractorFacade grab )
-	//{
-	//	IsGrabbed = true;
-	//	LastGrabbedBy = grab;
-	//}
-
-	//public void OnUnGrab( InteractorFacade grab )
-	//{
-	//	IsGrabbed = false;
-	//}
+	public void OnUnGrab( object sender, InteractableObjectEventArgs e )
+	{
+		IsGrabbed = false;
+	}
 }
