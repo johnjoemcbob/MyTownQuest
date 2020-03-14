@@ -17,7 +17,8 @@ public class PaintBrush : MonoBehaviour
 	[Header( "References" )]
 	public Transform BristlesParent;
 
-	private Color Colour;
+	[HideInInspector]
+	public Color Colour;
 
 	private KinematicVelocity Kinematic;
 

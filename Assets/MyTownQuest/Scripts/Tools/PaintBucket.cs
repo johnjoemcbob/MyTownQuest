@@ -38,6 +38,11 @@ public class PaintBucket : MonoBehaviour
 
 	public void OnPaintBrush( IsGrabbedTracker grab )
 	{
+		Splash( grab.LastGrabbedBy );
+	}
+
+	public void Splash( GameObject grabber )
+	{
 		if ( HitTime == 0 )
 		{
 			TargetAng = Quaternion.Euler( transform.GetChild( 0 ).localEulerAngles );
@@ -57,9 +62,9 @@ public class PaintBucket : MonoBehaviour
 		sys.material.color = PaintColour;
 
 		MyTownQuest.SpawnResourceAudioSource( "splash1", transform.position, Random.Range( 0.8f, 2.2f ), 0.2f );
-		if ( grab.LastGrabbedBy != null )
+		if ( grabber != null )
 		{
-			MyTownQuest.VibrateController( grab.LastGrabbedBy.name.Contains( "Left" ), 10, Random.Range( 0.3f, 0.5f ) );
+			MyTownQuest.VibrateController( grabber.name.Contains( "Left" ), 10, Random.Range( 0.3f, 0.5f ) );
 		}
 	}
 

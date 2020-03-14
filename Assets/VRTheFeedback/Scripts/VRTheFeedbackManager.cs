@@ -33,7 +33,8 @@ public class VRTheFeedbackManager : MonoBehaviour
     /// <param name="e"><see cref="InteractableObjectEventArgs"/></param>
     public delegate void VRTheFeedbackEventArgsEventHandler(object sender, VRTheFeedbackEventArgs e);
 
-    private AudioSource myAudio;
+	[HideInInspector]
+    public AudioSource myAudio;
 
     string fileName;
     string filePath;
@@ -45,8 +46,9 @@ public class VRTheFeedbackManager : MonoBehaviour
     public AudioClip justFeedback;
     private bool _threadSuccessfulNotificationPending = false;
     private bool _threadErrorNotificationPending = false;
+	private Dictionary<string, string> Feedback = new Dictionary<string, string>();
 
-    public event VRTheFeedbackEventArgsEventHandler FeedbackSuccessfullyUploaded;
+	public event VRTheFeedbackEventArgsEventHandler FeedbackSuccessfullyUploaded;
     public event VRTheFeedbackEventArgsEventHandler FeedbackFailedDueToError;
 
     public bool isRecording = false;
@@ -133,7 +135,7 @@ public class VRTheFeedbackManager : MonoBehaviour
 		myAudio.clip.GetData(samples, 0);
 		float[] ClipSamples = new float[lastTime];
 		Array.Copy(samples, ClipSamples, ClipSamples.Length - 1);
-		AudioClip newClip = AudioClip.Create("playRecordClip", ClipSamples.Length, 1, 22050, false, false);
+		AudioClip newClip = AudioClip.Create("playRecordClip", ClipSamples.Length, 1, 22050,false);
 		newClip.SetData(ClipSamples, 0);
 
 		AudioClip.Destroy(myAudio.clip);
@@ -150,7 +152,38 @@ public class VRTheFeedbackManager : MonoBehaviour
 
         if (filePath != null)
 		{
-			StartCoroutine(UploadToServer(metadata));
+			Feedback = metadata;
+		}
+	}
+
+
+	public void Button_Delete()
+	{
+		GetComponentInChildren<FeedbackMicController>().Decide_Delete();
+		//Feedback.Clear();
+	}
+
+	public void Button_Play()
+	{
+		if ( !myAudio.isPlaying )
+		{
+			myAudio.Play();
+		}
+	}
+
+	public void Button_Upload()
+	{
+		GetComponentInChildren<FeedbackMicController>().Decide_Upload();
+		UploadFeedback();
+	}
+
+	public void UploadFeedback()
+	{
+		if ( Feedback.Count > 0 )
+		{
+			StartCoroutine( UploadToServer( Feedback ) );
+
+			Feedback.Clear();
 		}
 	}
 

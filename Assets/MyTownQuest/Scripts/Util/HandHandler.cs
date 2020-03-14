@@ -23,6 +23,21 @@ public class HandHandler : MonoBehaviour
 		Grab.GrabButtonReleased += OnUnGrabTry;
 	}
 
+	private void OnTriggerEnter( Collider other )
+	{
+		var bucket = other.GetComponentInParent<PaintBucket>();
+		if ( bucket != null )
+		{
+			GetComponentInChildren<SkinnedMeshRenderer>().material.color = bucket.PaintColour;
+			bucket.Splash( gameObject );
+		}
+		//var brush = other.GetComponentInParent<PaintBrush>();
+		//if ( brush != null )
+		//{
+		//	GetComponentInChildren<SkinnedMeshRenderer>().material.color = brush.Colour;
+		//}
+	}
+
 	public void OnGrab( object sender, ObjectInteractEventArgs e )
 	{
 		Animator.SwitchState( "GrabLarge" );

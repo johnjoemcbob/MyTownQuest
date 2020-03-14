@@ -21,6 +21,8 @@ public class MyTownQuest : MonoBehaviour
 		//StartCoroutine( KeepSheetsUpToDate() );
 
 		//Debug.Log( SystemInfo.deviceUniqueIdentifier );
+
+		//mono_gmail.SendMail();
 	}
 
 	//private void Update()

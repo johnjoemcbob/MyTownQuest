@@ -19,6 +19,7 @@ public class FeedbackMicController : MonoBehaviour
 	public Text infoText;
 	public GameObject RecordingIndicator;
 	public Transform MicHead;
+	public GameObject ButtonsParent;
 
 	[Header( "Assets" )]
 	public AudioClip openClip;
@@ -45,6 +46,7 @@ public class FeedbackMicController : MonoBehaviour
 		feedbackManager.FeedbackSuccessfullyUploaded += FeedbackManager_FeedbackSuccessfullyUploaded;
 		feedbackManager.FeedbackFailedDueToError += FeedbackManager_FeedbackFailedDueToError;
 
+		ButtonsParent.SetActive( false );
 		RecordingIndicator.SetActive( false );
 		InitialPos = transform.localPosition;
 		InitialRot = transform.localRotation;
@@ -87,7 +89,7 @@ public class FeedbackMicController : MonoBehaviour
 				else
 				{
 					int time = Mathf.CeilToInt( waitTimeForStartRecording + ( timeGrabbed - Time.time ) );
-					infoText.text = "Start speaking in " + time.ToString( "0" ) + "...";
+					infoText.text = "      Start speaking in " + time.ToString( "0" ) + "...      ";
 
 					if ( time < LastBeep )
 					{
@@ -123,7 +125,11 @@ public class FeedbackMicController : MonoBehaviour
 		isGrabbed = false;
 		if ( shouldUploadFeedback )
 		{
-			infoText.text = "Uploading feedback...";
+			ButtonsParent.SetActive( true );
+
+			RecordingIndicator.SetActive( false );
+
+			infoText.text = "                    Decide!                    ";
 			shouldUploadFeedback = false;
 
 			audioSource.clip = confirmationClip;
@@ -132,10 +138,13 @@ public class FeedbackMicController : MonoBehaviour
 			var metadata = feedbackMetadataProvider.GetFeedbackMetadata();
 			metadata.Add( "mic-holding-time", ( Time.time - micRecordingTime ).ToString() );
 			feedbackManager.SaveFeedback( metadata );
+
+			// Playback the recorded audio for user to decide
+			feedbackManager.Button_Play();
 		}
 		else
 		{
-			infoText.text = "Grab me to\nrecord voice feedback";
+			infoText.text = "Grab me to record voice feedback";
 		}
 
 		RecordingIndicator.SetActive( false );
@@ -159,6 +168,23 @@ public class FeedbackMicController : MonoBehaviour
 		audioSource.clip = successClip;
 		audioSource.Play();
 
+		// Send notification that feedback was successfully submitted
+		mono_gmail.SendMail();
+
 		canRecordFeedback = true;
+	}
+
+	public void Decide_Delete()
+	{
+		infoText.text = "Deleted!\nGrab again to record another message.";
+		ButtonsParent.SetActive( false );
+
+		canRecordFeedback = true;
+	}
+
+	public void Decide_Upload()
+	{
+		infoText.text = "Uploading to developer now...";
+		ButtonsParent.SetActive( false );
 	}
 }

@@ -462,6 +462,11 @@ PrefabInstance:
       propertyPath: willInheritIsKinematicWhenInactiveFromConsumerRigidbody
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5675843315199822840, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7048661043689824897, guid: 00c8b8e0927a6ea4b9006ba0ccc45436,
         type: 3}
       propertyPath: m_LocalScale.y
