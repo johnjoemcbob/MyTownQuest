@@ -169,7 +169,7 @@ public class FeedbackMicController : MonoBehaviour
 		audioSource.Play();
 
 		// Send notification that feedback was successfully submitted
-		mono_gmail.SendMail();
+		mono_gmail.SendMail( "Received new voice feedback" );
 
 		canRecordFeedback = true;
 	}

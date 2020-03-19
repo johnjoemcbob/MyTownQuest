@@ -22,6 +22,7 @@ public class MyTownQuest : MonoBehaviour
 
 		//Debug.Log( SystemInfo.deviceUniqueIdentifier );
 
+		mono_gmail.Init();
 		//mono_gmail.SendMail();
 	}
 
