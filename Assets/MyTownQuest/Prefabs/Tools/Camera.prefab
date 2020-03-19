@@ -255,13 +255,43 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1932097246708182502}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2374451319292667877}
   - {fileID: 1191117513192043627}
-  m_Father: {fileID: 6256854795230784763}
+  m_Father: {fileID: 4841372593922455104}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2130317956872944885
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 184539423186542822}
+  m_Layer: 0
+  m_Name: PrintPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &184539423186542822
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130317956872944885}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.02, y: -0.0049, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4841372593922455104}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7265621516125068682
@@ -279,8 +309,13 @@ MonoBehaviour:
   LerpSpeed: 2
   ButtonLerpSpeed: 1
   BodyHitAngle: 30
+  PolaroidMove: 0.09
+  PrintSegments: 5
   Button: {fileID: 5063332674904190649}
+  PolaroidPrintParent: {fileID: 184539423186542822}
   Texture: {fileID: 8400000, guid: 96026848a2cef9e428a4a7e550014660, type: 2}
+  PolaroidPrefab: {fileID: 4503021708496582494, guid: 13ded1dc0c939704db85a1c61d39acce,
+    type: 3}
 --- !u!65 &4750448025174197915
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -289,7 +324,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8391555633266159587}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.15, z: 0.2}
@@ -839,13 +874,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7877662761193188556}
-  m_LocalRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0.15, y: -0, z: -0.05}
+  m_LocalRotation: {x: -0.40957603, y: 0.7094065, z: -0.28678823, w: 0.49673176}
+  m_LocalPosition: {x: -0.12, y: -0, z: -0.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7451839747936650698}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 110, z: -60}
 --- !u!1 &8191011136488517877
 GameObject:
   m_ObjectHideFlags: 0
@@ -869,13 +904,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8191011136488517877}
-  m_LocalRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0.15, y: -0.000000013038516, z: 0.049999993}
+  m_LocalRotation: {x: 0.40957603, y: 0.7094065, z: 0.28678823, w: 0.49673176}
+  m_LocalPosition: {x: -0.12, y: 0, z: 0.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7451839747936650698}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 110, z: 60}
 --- !u!1001 &2230385503696924096
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -970,6 +1005,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c3f72e2966513c4180cddc91e7852f6, type: 3}
+--- !u!4 &4841372593922455104 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6756500556216671104, guid: 8c3f72e2966513c4180cddc91e7852f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 2230385503696924096}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8391555633266159587 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7676140026770014755, guid: 8c3f72e2966513c4180cddc91e7852f6,
